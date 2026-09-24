@@ -1,0 +1,3 @@
+node_modules/
+# dist/ is committed on purpose: consumers install this package straight from
+# git, and a git dependency must not need a build step to be usable.

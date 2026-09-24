@@ -1,0 +1,1062 @@
+/* @polluxdev/chrome — header and footer styles.
+
+   Load after tokens.css (and fallbacks.css for the metric-matched font
+   fallbacks). Every rule is either scoped to .site-header / .site-footer or
+   carries the pc- prefix, so the file can sit on a page it does not own — the
+   Dropby demo — without restyling anything else there.
+
+   This is the site's six scoped component stylesheets (Header, LanguagePicker,
+   MegaMenu, MegaMenuCard, ToggleChip, Button) and Footer, flattened. The pc-
+   names replace the generic ones Astro's scoping used to keep apart (.trigger,
+   .card, .glyph and .bar were each used by two components). The comments that
+   explain a decision travel with the rule. */
+
+/* ------------------------------------------------------------------ base */
+
+/* The slice of the site's global reset the chrome relies on. Wrapped in
+   :where() so it carries no specificity: every component rule below still wins
+   over it, exactly as it did over the site's global reset. On polluxdev.com
+   these duplicate global.css and change nothing. */
+:where(.site-header, .site-footer),
+:where(.site-header, .site-footer) *,
+:where(.site-header, .site-footer) *::before,
+:where(.site-header, .site-footer) *::after {
+	box-sizing: border-box;
+}
+
+:where(.site-header, .site-footer) :where(h2, p, ul) {
+	margin: 0;
+}
+
+:where(.site-header, .site-footer) :where(ul[class]) {
+	padding: 0;
+	list-style: none;
+}
+
+:where(.site-header, .site-footer) :where(svg) {
+	display: block;
+	max-width: 100%;
+}
+
+:where(.site-header, .site-footer) :where(button) {
+	font: inherit;
+	color: inherit;
+}
+
+:where(.site-header, .site-footer) :where(h2) {
+	font-family: var(--face-heading);
+	color: var(--ink);
+	text-wrap: balance;
+}
+
+/* Links do not change colour on hover — only buttons and cards do. */
+:where(.site-header, .site-footer) :where(a) {
+	color: inherit;
+	text-decoration: none;
+}
+
+:where(.site-header, .site-footer) :where(:focus-visible) {
+	outline: 2px solid var(--brand);
+	outline-offset: 2px;
+}
+
+:where(.site-header, .site-footer) {
+	font-family: var(--face-body);
+	font-size: 15px;
+	line-height: 1.55;
+	color: var(--ink-body);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.pc-container {
+	width: 100%;
+	max-width: var(--w-content);
+	margin-inline: auto;
+	padding-inline: var(--gutter);
+}
+
+.pc-visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* ---------------------------------------------------------------- button */
+
+/* The one button in the system. CLAUDE.md §4: no uppercase, no icon other
+   than a trailing →, no shadow at any state. Only the header's nav-size
+   primary is drawn by the chrome. */
+.pc-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	border: 1px solid transparent;
+	border-radius: var(--r-md);
+	font-family: var(--face-body);
+	text-align: center;
+	cursor: pointer;
+	transition:
+		background-color var(--t-hover) var(--ease),
+		border-color var(--t-hover) var(--ease),
+		color var(--t-hover) var(--ease);
+}
+
+.pc-size-nav {
+	padding: 11px 18px;
+	font-size: 14.5px;
+	font-weight: 600;
+	min-height: 44px;
+}
+
+.pc-btn-primary {
+	background: var(--brand);
+	color: var(--bg);
+}
+
+.pc-btn-primary:hover {
+	background: var(--brand-hover);
+	color: var(--bg);
+}
+
+/* ------------------------------------------------------------ ± toggle */
+
+/* The ± toggle — the system's smallest signature (CLAUDE.md §4). */
+.pc-chip {
+	display: block;
+	flex: none;
+	width: 23px;
+	height: 23px;
+	border-radius: var(--r-md);
+	background: var(--surface-chip);
+}
+
+.pc-chip-glyph {
+	display: block;
+}
+
+.pc-chip-bar {
+	stroke: var(--ink);
+	stroke-width: 1.6;
+}
+
+.pc-chip-bar-v {
+	transform-box: view-box;
+	transform-origin: 11.5px 11.5px;
+	transition: transform var(--t-toggle) var(--ease);
+}
+
+[data-open='true'] .pc-chip-bar-v {
+	transform: rotate(90deg);
+}
+
+/* ---------------------------------------------------------------- header */
+
+.site-header {
+	position: sticky;
+	top: 0;
+	z-index: 50;
+	background: var(--bg);
+	border-bottom: 1px solid var(--line);
+}
+
+.pc-bar {
+	display: flex;
+	align-items: center;
+	gap: 40px;
+	height: var(--header-h);
+}
+
+.site-header .pc-wordmark {
+	display: inline-flex;
+	align-items: center;
+	flex: none;
+	min-height: 44px;
+	font-size: 19px;
+	font-weight: 800;
+	font-family: var(--font-archivo);
+	letter-spacing: -.02em;
+	color: var(--ink);
+}
+
+.pc-primary {
+	flex: 1;
+}
+
+.pc-nav-list {
+	display: flex;
+	align-items: center;
+	gap: 28px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.pc-trigger {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	min-height: 44px;
+	padding: 0;
+	background: none;
+	border: 0;
+	font-size: 15.5px;
+	font-weight: 500;
+	color: var(--ink);
+	cursor: pointer;
+}
+
+.pc-trigger-label {
+	position: relative;
+	display: inline-block;
+	padding-block: 2px;
+}
+
+/* Active section only: the teal underline marks where you are, not what is
+   momentarily open — the ± chip already reports that.
+
+   It sits on the header's own bottom hairline rather than under the word.
+   The label is centred in the bar at every nesting level, so the drop from
+   its baseline box to the bar's bottom edge is exactly half the difference
+   between the two heights (100% here is the label's own height); the extra
+   pixel takes the bar across the hairline, so the teal reads as replacing
+   that line rather than floating above it. */
+.pc-trigger[aria-current='true'] .pc-trigger-label::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: calc((100% - var(--header-h)) / 2 - 1px);
+	height: 2px;
+	background: var(--brand);
+}
+
+/* Handed over once the rail is measured: from then on there is one line for
+   the whole nav, and it travels. Without JavaScript this never fires and the
+   static underline above stays. */
+.site-header[data-rail] .pc-trigger[aria-current='true'] .pc-trigger-label::after {
+	display: none;
+}
+
+/* Parked on the header's own hairline, the same line the static underline
+   covers: offsets resolve against the padding box, so -1px puts the bar's
+   lower edge at the outer edge of the 1px border.
+
+   It is drawn 1px wide and stretched, so travel and resize are one
+   transform: a scaled 2px bar rasterises identically at any width, and the
+   browser never re-lays-out the header to animate it. */
+.pc-nav-rail {
+	position: absolute;
+	left: 0;
+	bottom: -1px;
+	width: 1px;
+	height: 2px;
+	background: var(--brand);
+	transform: scaleX(0);
+	transform-origin: left center;
+	opacity: 0;
+	pointer-events: none;
+	transition:
+		transform var(--t-toggle) var(--ease),
+		opacity var(--t-hover) var(--ease);
+}
+
+/* The travel is the whole point of the effect, so when it is unwelcome the
+   line still reports the same thing — it just arrives without the journey. */
+@media (prefers-reduced-motion: reduce) {
+	.pc-nav-rail {
+		transition: none;
+	}
+}
+
+.pc-actions {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-left: auto;
+}
+
+/* Only offered when the script that drives it is running. The 38px chrome is
+   the system's icon button; the 44px button around it is the hit target. */
+.pc-mobile-toggle {
+	display: none;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	background: none;
+	border: 0;
+	cursor: pointer;
+}
+
+.pc-icon-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 38px;
+	height: 38px;
+	border-radius: var(--r-sm);
+	background: var(--surface-control);
+}
+
+/* Drawn as strokes, not boxes: a stroke is antialiased rather than
+   edge-snapped, so the bars keep an even weight wherever they land. */
+.pc-burger-bar {
+	stroke: var(--ink);
+	stroke-width: 2;
+	transform-box: view-box;
+	transform-origin: 8.5px 8.5px;
+	transition:
+		transform var(--t-toggle) var(--ease),
+		opacity var(--t-toggle) var(--ease);
+}
+
+/* Open: the outer bars close into an X, the middle one drops out. */
+.pc-mobile-toggle[aria-expanded='true'] .pc-burger-top {
+	transform: rotate(45deg) translateY(4.5px);
+}
+
+.pc-mobile-toggle[aria-expanded='true'] .pc-burger-mid {
+	opacity: 0;
+}
+
+.pc-mobile-toggle[aria-expanded='true'] .pc-burger-bot {
+	transform: rotate(-45deg) translateY(-4.5px);
+}
+
+/* ------------------------------------------------------------ mega menu */
+
+/* The one sanctioned shadow in the system: an overlay menu casts a short,
+   tight shadow onto the page it covers. See The No-Shadow Rule in the site's
+   DESIGN.md — this exception does not extend to cards, panels or states. */
+.pc-mega {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	background: var(--bg);
+	border-bottom: 1px solid var(--line);
+	box-shadow: var(--shadow-overlay);
+}
+
+.pc-mega[hidden] {
+	display: none;
+}
+
+/* Cards start at the content gutter — there is no intro column to push
+   them right. */
+.pc-mega-grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 14px;
+	padding-block: 40px 44px;
+}
+
+/* ------------------------------------------------------- mega-menu card */
+
+/* Mega-menu card (CLAUDE.md §4): 246×282, --surface-dark, --r-md, title +
+   description + a bottom-left arrow chip. The whole card floods --brand on
+   hover — the system's signature move, so it commits fully. */
+.pc-card {
+	display: flex;
+	flex-direction: column;
+	width: 246px;
+	height: 282px;
+	padding: 22px 20px 20px;
+	background: var(--surface-dark);
+	border-radius: var(--r-md);
+	color: var(--bg);
+	transition: background-color var(--t-hover) var(--ease);
+}
+
+.pc-card:hover,
+.pc-card:focus-visible {
+	background: var(--brand);
+	color: var(--bg);
+}
+
+.pc-card-title {
+	font-family: var(--face-heading);
+	font-weight: 700;
+	font-size: 19px;
+	line-height: 1.2;
+	letter-spacing: -.025em;
+}
+
+.pc-card-desc {
+	margin-top: 10px;
+	font-size: 13.5px;
+	line-height: 1.5;
+	color: var(--ink-muted-dark);
+	text-wrap: pretty;
+	transition: color var(--t-hover) var(--ease);
+}
+
+.pc-card:hover .pc-card-desc,
+.pc-card:focus-visible .pc-card-desc {
+	color: var(--ink-on-dark);
+}
+
+.pc-card-spacer {
+	flex: 1;
+}
+
+.pc-card-arrow {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	border-radius: var(--r-sm);
+	background: rgba(255, 255, 255, .13);
+	font-size: 16px;
+	line-height: 1;
+}
+
+/* The chip holds still; the glyph inside it nudges with the flood. */
+.pc-card-glyph {
+	display: inline-block;
+	transition: transform var(--t-hover) var(--ease);
+}
+
+.pc-card:hover .pc-card-glyph,
+.pc-card:focus-visible .pc-card-glyph {
+	transform: translateX(3px);
+}
+
+/* Mobile-only link marker. Drawn as strokes with square caps and mitred
+   joins — a drafting arrow, not a glyph — so it holds its weight at 12px the
+   way the burger bars and the ± chip do. Hidden until the card becomes a
+   plain link; the chip above carries the desktop card. */
+.pc-arrow-ne {
+	display: none;
+	flex: none;
+	margin-left: 8px;
+	fill: none;
+	stroke: var(--ink-subtle);
+	stroke-width: 1.6;
+	stroke-linecap: square;
+	stroke-linejoin: miter;
+	transition: transform var(--t-hover) var(--ease);
+}
+
+.pc-card:hover .pc-arrow-ne {
+	transform: translate(2px, -2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.pc-card-glyph,
+	.pc-arrow-ne {
+		transition: none;
+	}
+
+	.pc-card:hover .pc-card-glyph,
+	.pc-card:focus-visible .pc-card-glyph,
+	.pc-card:hover .pc-arrow-ne {
+		transform: none;
+	}
+}
+
+/* ------------------------------------------------------ language picker */
+
+/* Pushed to the right end of the nav row, so it sits beside the CTA rather
+   than trailing the menu labels. */
+.pc-lang {
+	position: relative;
+	margin-left: auto;
+}
+
+.pc-lang-trigger {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	min-height: 44px;
+	padding: 0;
+	background: none;
+	border: 0;
+	font-family: inherit;
+	font-size: 15.5px;
+	font-weight: 500;
+	color: var(--ink);
+	cursor: pointer;
+}
+
+.pc-globe {
+	flex: none;
+	fill: none;
+	stroke: var(--ink);
+	stroke-width: 1.5;
+}
+
+/* Same stroke treatment as the north-east arrow in the nav panel: square
+   caps and mitred joins hold the weight at 12px. */
+.pc-chevron {
+	flex: none;
+	fill: none;
+	stroke: var(--ink);
+	stroke-width: 1.6;
+	stroke-linecap: square;
+	stroke-linejoin: miter;
+	transform-box: view-box;
+	transform-origin: 6px 6px;
+	transition: transform var(--t-toggle) var(--ease);
+}
+
+.pc-lang[data-open='true'] .pc-chevron {
+	transform: rotate(180deg);
+}
+
+/* An overlay menu, so it takes the system's single sanctioned shadow — the
+   same exception the mega menu runs on. */
+.pc-lang-panel {
+	position: absolute;
+	top: calc(100% - 4px);
+	right: 0;
+	z-index: 1;
+	min-width: 220px;
+	background: var(--bg);
+	border: 1px solid var(--line);
+	border-radius: var(--r-md);
+	box-shadow: var(--shadow-overlay);
+	padding: 6px;
+}
+
+.pc-lang-panel[hidden] {
+	display: none;
+}
+
+.pc-lang-options {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.pc-lang-option {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	justify-content: center;
+	min-height: 44px;
+	padding: 6px 12px;
+	border-radius: var(--r-sm);
+	font-size: 15px;
+	font-weight: 500;
+	color: var(--ink);
+}
+
+/* A card-like row, so it may take a hover fill (CLAUDE.md §4). */
+a.pc-lang-option:hover,
+a.pc-lang-option:focus-visible {
+	background: var(--surface-control);
+}
+
+/* The language you are already reading in — stated by weight, not colour. */
+.pc-lang-option[aria-current='true'] {
+	font-weight: 700;
+}
+
+/* No translation of this page yet: text, never a link to a page that would
+   404, with the reason said in the language being read. */
+.site-header .pc-unavailable {
+	color: var(--ink-subtle);
+}
+
+.site-header .pc-hint {
+	max-width: 200px;
+	font-size: 12.5px;
+	font-weight: 400;
+	line-height: 1.35;
+	color: var(--ink-subtle);
+	text-wrap: pretty;
+}
+
+/* --------------------------------------------------- header below 960px */
+
+@media (max-width: 960px) {
+	.pc-bar {
+		gap: 16px;
+	}
+
+	html[data-js] .pc-mobile-toggle {
+		display: inline-flex;
+	}
+
+	/* Full-screen panel under the header. Closed by default so nothing
+	   flashes open before the script runs. */
+	.pc-primary {
+		display: none;
+		position: fixed;
+		top: var(--header-h);
+		left: 0;
+		right: 0;
+		bottom: 0;
+		overflow-y: auto;
+		padding: 8px var(--gutter) 48px;
+		background: var(--bg);
+		border-top: 1px solid var(--line);
+	}
+
+	.site-header[data-mobile-open] .pc-primary {
+		display: block;
+	}
+
+	.pc-nav-list {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0;
+	}
+
+	.pc-nav-item {
+		border-bottom: 1px solid var(--line);
+		padding-bottom: 12px;
+	}
+
+	.pc-trigger {
+		width: 100%;
+		justify-content: space-between;
+		min-height: 56px;
+		font-size: 17px;
+	}
+
+	/* Back under the word: in the stacked panel each item is its own row, and
+	   there is no bar edge for a single line to travel along. */
+	.pc-nav-rail {
+		display: none;
+	}
+
+	.site-header[data-rail] .pc-trigger[aria-current='true'] .pc-trigger-label::after {
+		display: block;
+	}
+
+	.pc-trigger[aria-current='true'] .pc-trigger-label::after {
+		bottom: -2px;
+	}
+
+	/* Inside the mobile panel the menu is an inline accordion body, not a
+	   dropdown: the cards become plain links stacked one per row. */
+	.pc-mega {
+		position: static;
+		border-bottom: 0;
+		/* Not an overlay down here — it is an accordion body in the flow. */
+		box-shadow: none;
+	}
+
+	.pc-mega-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 0;
+		padding: 0 0 8px;
+	}
+
+	/* Below 960px the menu is an accordion inside the nav panel, where a
+	   282px dark card per destination costs a whole screen. The card degrades
+	   to what it always was underneath: a link. Description and arrow chip go;
+	   the row keeps a 44px hit target and does not recolour on hover, because
+	   down here it is a plain nav link (CLAUDE.md §4). */
+	.pc-card {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		width: 100%;
+		height: auto;
+		min-height: 44px;
+		padding: 6px 0;
+		background: none;
+		border-radius: 0;
+		color: var(--ink-body);
+	}
+
+	.pc-card:hover,
+	.pc-card:focus-visible {
+		background: none;
+		color: var(--ink-body);
+	}
+
+	.pc-card-title {
+		font-family: var(--face-body);
+		font-weight: 500;
+		font-size: 16px;
+		letter-spacing: 0;
+	}
+
+	.pc-card-desc,
+	.pc-card-spacer,
+	.pc-card-arrow {
+		display: none;
+	}
+
+	.pc-arrow-ne {
+		display: block;
+	}
+
+	/* Inside the mobile panel the picker is another nav row, and its list is
+	   an accordion body in the flow — not an overlay. */
+	.pc-lang {
+		margin-left: 0;
+		border-bottom: 1px solid var(--line);
+		padding-bottom: 12px;
+	}
+
+	.pc-lang-trigger {
+		width: 100%;
+		justify-content: flex-start;
+		min-height: 56px;
+		font-size: 17px;
+	}
+
+	/* Pushed to the far edge, where the ± chips of the menus above sit. */
+	.pc-chevron {
+		margin-left: auto;
+	}
+
+	.pc-lang-panel {
+		position: static;
+		min-width: 0;
+		border: 0;
+		border-radius: 0;
+		box-shadow: none;
+		padding: 0 0 8px;
+	}
+
+	.pc-lang-option {
+		padding-inline: 0;
+		font-size: 16px;
+	}
+
+	a.pc-lang-option:hover,
+	a.pc-lang-option:focus-visible {
+		background: none;
+	}
+
+	.site-header .pc-hint {
+		max-width: 34ch;
+	}
+}
+
+@media (max-width: 380px) {
+	.pc-actions .pc-cta {
+		padding-inline: 14px;
+	}
+}
+
+/* ---------------------------------------------------------------- footer */
+
+/* The separation above the footer is this section's own padding, so the
+   hairline lands on the footer rather than floating in the gap. */
+.site-footer {
+	background: var(--bg);
+	padding-top: 120px;
+}
+
+.pc-rule {
+	height: 1px;
+	background: var(--line);
+}
+
+.pc-inner {
+	display: flex;
+	flex-direction: column;
+	gap: 96px;
+	padding-block: 72px 40px;
+}
+
+.pc-top {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+	gap: 56px;
+}
+
+.pc-columns {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 40px;
+}
+
+.pc-brand {
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+}
+
+.site-footer .pc-wordmark {
+	font-size: 19px;
+	font-family: var(--font-archivo);
+	font-weight: 800;
+	letter-spacing: -.02em;
+	color: var(--ink);
+	line-height: 1.2;
+}
+
+/* 440px: the panel side-column measure (CLAUDE.md §2). */
+.pc-positioning {
+	max-width: 440px;
+	font-size: 15px;
+	font-family: var(--font-archivo);
+	line-height: 1.6;
+	color: var(--ink-body);
+}
+
+.pc-column {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+/* Deliberately inverted: light heading, bold links. */
+.site-footer .pc-column-heading {
+	font-family: var(--face-body);
+	font-size: 15px;
+	font-weight: 400;
+	letter-spacing: 0;
+	color: var(--ink-muted);
+}
+
+.pc-column-links,
+.pc-legal-links,
+.pc-social {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+/* Rows sit flush, so the link's own height is the column's rhythm. At 14.5px
+   type a 44px row leaves 22px of air between links, which reads as a loose
+   list rather than a footer column — so a mouse gets 36px, still half again
+   WCAG 2.5.8's 24px minimum. Any device with a touch pointer keeps the full
+   44px of CLAUDE.md §7; the query below is the exception to that rule, and
+   the only one. */
+.pc-column-links a,
+.pc-legal-links a,
+.pc-legal-links button,
+.pc-social a {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	min-width: 44px;
+	min-height: 36px;
+	font-size: 14.5px;
+	font-weight: 500;
+	color: var(--ink);
+}
+
+@media (any-pointer: coarse) {
+	.pc-column-links a,
+	.pc-legal-links a,
+	.pc-legal-links button,
+	.pc-social a {
+		min-height: 44px;
+	}
+}
+
+/* Stripped back to its siblings: it sits in a row of links and has no reason
+   to look like anything else, so the rule above applies to all four alike.
+   Hidden until the data-js marker says the dialog exists — the same contract
+   the mobile nav toggle uses, so a dead control never ships. Only `display`
+   is scoped through .pc-legal-links, so it outranks the link rule above while
+   the type still comes from that rule; the Astro version lost the display
+   contest and drew the control even with scripts off. */
+.pc-cookie-settings {
+	appearance: none;
+	padding: 0;
+	border: 0;
+	background: none;
+	font: inherit;
+	text-align: left;
+	cursor: pointer;
+}
+
+.pc-legal-links .pc-cookie-settings {
+	display: none;
+}
+
+:root[data-js] .pc-legal-links .pc-cookie-settings {
+	display: inline-flex;
+}
+
+/* The language of the page you are on, stated by weight rather than colour —
+   the same marker the picker uses on its current option. */
+.pc-column-links a[aria-current='true'] {
+	font-weight: 700;
+}
+
+/* No translation of this page yet. Text, not a dead link, with the reason
+   said in the language being read. */
+.site-footer .pc-unavailable {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 2px;
+	/* Text, not a target: it follows the links' rhythm, not their hit area. */
+	min-height: 36px;
+	padding-block: 4px;
+	font-size: 14.5px;
+	font-weight: 500;
+	color: var(--ink-subtle);
+}
+
+.site-footer .pc-hint {
+	max-width: 24ch;
+	font-size: 12.5px;
+	font-weight: 400;
+	line-height: 1.35;
+	text-wrap: pretty;
+}
+
+.pc-bottom {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px 40px;
+}
+
+.pc-legal {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 12px 32px;
+}
+
+.pc-copyright {
+	font-size: 14px;
+	font-family: var(--font-archivo);
+	color: var(--ink-muted);
+}
+
+/* Labels for the two bottom-row lists. Drawn only where that row breaks into
+   stacked columns; at desktop width the row is one short line that reads
+   without them. They stay in the accessibility tree at every width, so a
+   screen reader always gets both lists named. */
+.site-footer .pc-bottom-heading {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+
+.pc-legal-links,
+.pc-social {
+	flex-direction: row;
+	gap: 32px;
+}
+
+/* The marks are full-bleed brand logos: each carries its own silhouette with
+   the glyph knocked out, so the page shows through rather than a second
+   chip sitting behind it. Colour is inherited from the link. */
+.pc-social-mark {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+}
+
+@media (max-width: 960px) {
+	.pc-top {
+		grid-template-columns: 1fr;
+		gap: 48px;
+	}
+
+	.pc-inner {
+		gap: 64px;
+	}
+}
+
+@media (max-width: 720px) {
+	.pc-columns {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 32px;
+	}
+}
+
+@media (max-width: 560px) {
+	/* Everything below the brand block is now one stack of headed link
+	   groups — Services, Company and Languages out of .pc-columns, then Legal
+	   and Social out of .pc-bottom — so the space between any two of them is a
+	   single value rather than three that happen to agree. .pc-inner carries
+	   the Languages-to-Legal gap, which is the seam between the two
+	   containers and the one that used to be twice everything else. */
+	.site-footer {
+		--stack-gap: 28px;
+	}
+
+	.pc-inner {
+		gap: var(--stack-gap);
+	}
+
+	.pc-columns {
+		grid-template-columns: 1fr;
+		gap: var(--stack-gap);
+	}
+
+	/* The bottom row becomes two more headed link columns, reading straight on
+	   from the three above it, with the copyright line closing the footer. */
+	.pc-bottom {
+		flex-direction: column;
+		align-items: stretch;
+		gap: var(--stack-gap);
+	}
+
+	/* Dissolved: it exists to group the copyright with the legal links on one
+	   desktop line, and that line is gone here. Its children become items of
+	   .pc-bottom so the copyright can be ordered past the social list. */
+	.pc-legal {
+		display: contents;
+	}
+
+	.pc-legal-block,
+	.pc-social-block {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.pc-legal-block {
+		order: 1;
+	}
+
+	.pc-social-block {
+		order: 2;
+	}
+
+	/* Last and centred: the one line down here that is a statement rather
+	   than a destination. */
+	.pc-copyright {
+		order: 3;
+		text-align: center;
+		font-weight: 500;
+	}
+
+	/* Back to the footer's default stacked-link treatment. A row of three
+	   legal links wraps into ragged pairs at this width. Flush rows, so each
+	   link keeps its 44px min-height without the list going loose. */
+	.pc-legal-links,
+	.pc-social {
+		flex-direction: column;
+		gap: 0;
+	}
+
+	.site-footer .pc-bottom-heading {
+		position: static;
+		width: auto;
+		height: auto;
+		overflow: visible;
+		clip-path: none;
+		white-space: normal;
+	}
+}

@@ -1,0 +1,38 @@
+{
+  "name": "@polluxdev/chrome",
+  "version": "1.0.0",
+  "description": "The pollux|dev site header and footer as framework-free HTML render functions, stylesheet and behaviour script. Shared by polluxdev.com and the Dropby demo.",
+  "type": "module",
+  "private": true,
+  "license": "UNLICENSED",
+  "sideEffects": [
+    "./dist/nav.js",
+    "./styles/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./nav": {
+      "types": "./dist/nav.d.ts",
+      "default": "./dist/nav.js"
+    },
+    "./styles/*": "./styles/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "styles"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

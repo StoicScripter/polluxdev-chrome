@@ -1,0 +1,79 @@
+/* pollux|dev design tokens — the only place a raw value is allowed to live.
+   Mirrors CLAUDE.md §1. Do not add a color, radius or easing that isn't here. */
+
+:root {
+	/* Brand */
+	--brand:            #00A9C6; /* CTAs, active nav underline, dark-card hover fill */
+	--brand-hover:      #007E93; /* hover state of every filled button */
+	--brand-ink:        #005A69;
+	--brand-on-dark:    #3ECBE0; /* eyebrows, arrow links and hovers inside dark panels only */
+
+	/* Ink */
+	--ink-display:      #000000; /* h1/h2 only */
+	--ink:              #0E1B1F;
+	--ink-body:         #2B2B2B;
+	--ink-muted:        #46595D;
+	--ink-subtle:       #63767A;
+	--ink-on-dark:      #EEF5F5;
+	--ink-muted-dark:   #A8ADAE;
+
+	/* State — the only red in the system, and only ever for form errors.
+	   6.5:1 on white, so a 13.5px message still clears AA. Never decorative,
+	   never a fill, never used to draw attention to something that is fine. */
+	--danger:           #B3261E;
+
+	/* Surfaces */
+	--bg:               #FFFFFF;
+	--surface-card:     #F5F8F8; /* light cards, quote cards */
+	--surface-control:  #EEF4F5; /* icon buttons, input chrome */
+	--surface-chip:     #F2F2F2; /* the ± toggle chip */
+	--surface-dark:     #0E1B1F; /* dark cards (mega-menu rows) */
+	--surface-panel:    #060D0F; /* full-bleed dark panels */
+
+	/* Lines */
+	--line:             rgba(14, 27, 31, .12);
+	--line-strong:      rgba(14, 27, 31, .16);
+	--line-dark:        rgba(255, 255, 255, .16);
+	--line-panel:       rgba(255, 255, 255, .09);
+
+	/* Radii — nothing rounder than 10px, ever */
+	--r-sm:  5px;  /* icon buttons */
+	--r-md:  6px;  /* buttons, nav chips, dark cards */
+	--r-lg: 10px;  /* panels, light cards */
+
+	/* Elevation — the system has exactly one shadow, and it is only for an
+	   overlay menu covering the page. Never for cards, panels, hover or focus. */
+	--shadow-overlay: 0 12px 24px -12px rgba(14, 27, 31, .18);
+
+	/* Motion — one easing for the whole site */
+	--ease: cubic-bezier(.2, .7, .2, 1);
+	--t-hover:  .18s;
+	--t-toggle: .22s;
+
+	/* Layout — derived from CLAUDE.md §3, not new design decisions */
+	--w-panel:      1600px; /* full-bleed dark panels */
+	--w-content:    1320px; /* standard content */
+	--w-prose:      1100px; /* centered hero and long prose */
+	--gutter:         32px;
+	--gutter-panel:   20px;
+	--header-h:       80px; /* sticky rails park at 104px = header + 24px */
+
+	/* Type faces — Astro's font pipeline fills the --font-* variables */
+	--face-body:    var(--font-manrope, system-ui, sans-serif);
+	--face-heading: var(--font-archivo, sans-serif);
+	--face-quote:   var(--font-serif, Georgia, serif);
+}
+
+@media (max-width: 1180px) {
+	:root {
+		--gutter: 24px;
+	}
+}
+
+@media (max-width: 720px) {
+	:root {
+		--gutter: 20px;
+		--gutter-panel: 16px;
+		--header-h: 68px;
+	}
+}

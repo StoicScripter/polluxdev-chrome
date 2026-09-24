@@ -1,0 +1,99 @@
+/* Metric-matched fallback faces — what the reader sees for the ~100ms before a
+   webfont lands, and the reason nothing jumps when it does.
+
+   These replace Astro's generated fallbacks, which are wrong on this site. See
+   the long comment above `fonts` in astro.config.mjs for why; the short version
+   is that Astro measures a family on whichever subset file it fetches first,
+   that file is `latin-ext`, and a font file holding only accents and currency
+   marks has no meaningful average glyph width.
+
+   Every number below is capsize's own formula over the *latin* subset of the
+   same file Astro ships:
+
+     size-adjust        = (xWidthAvg / unitsPerEm) / (fallback ditto)
+     ascent-override    = ascent  / (unitsPerEm x size-adjust)
+     descent-override   = |descent| / (unitsPerEm x size-adjust)
+
+   Arial's metrics are the ones Astro carries in SYSTEM_METRICS
+   (ascent 1854, descent -434, lineGap 67, upm 2048, xWidthAvg 913; Bold 983),
+   Times New Roman's are 1825 / -443 / 87 / 2048 / 832. To re-derive after a
+   Google font update, read the woff2 in .astro/fonts with @capsizecss/unpack
+   and apply the three lines above — do not eyeball these.
+
+   Two faces per sans family, split at 700, because Arial Bold is 7.7% wider
+   than Arial and one `size-adjust` cannot be right for both. `local()` only:
+   nothing here is downloaded, so `font-display` has nothing to govern. */
+
+/* ------------------------------------------------------------- Manrope */
+
+@font-face {
+	font-family: 'Manrope Fallback';
+	src: local('Arial');
+	font-weight: 400 600;
+	font-style: normal;
+	size-adjust: 99.4839%;
+	ascent-override: 107.1530%;
+	descent-override: 30.1556%;
+	line-gap-override: 0%;
+}
+
+@font-face {
+	font-family: 'Manrope Fallback';
+	src: local('Arial Bold'), local('Arial');
+	font-weight: 700 900;
+	font-style: normal;
+	size-adjust: 92.3996%;
+	ascent-override: 115.3685%;
+	descent-override: 32.4677%;
+	line-gap-override: 0%;
+}
+
+/* ------------------------------------------------------------- Archivo */
+
+@font-face {
+	font-family: 'Archivo Fallback';
+	src: local('Arial');
+	font-weight: 400 600;
+	font-style: normal;
+	size-adjust: 102.2878%;
+	ascent-override: 85.8362%;
+	descent-override: 20.5303%;
+	line-gap-override: 0%;
+}
+
+@font-face {
+	font-family: 'Archivo Fallback';
+	src: local('Arial Bold'), local('Arial');
+	font-weight: 700 900;
+	font-style: normal;
+	size-adjust: 95.0039%;
+	ascent-override: 92.4173%;
+	descent-override: 22.1044%;
+	line-gap-override: 0%;
+}
+
+/* ---------------------------------------------------- Instrument Serif */
+/* One weight, two styles, and the italic is narrower — so it takes its own
+   face rather than being synthesised off the upright's size-adjust. */
+
+@font-face {
+	font-family: 'Instrument Serif Fallback';
+	src: local('Times New Roman');
+	font-weight: 400;
+	font-style: normal;
+	size-adjust: 83.9385%;
+	ascent-override: 117.9435%;
+	descent-override: 36.9318%;
+	line-gap-override: 0%;
+}
+
+@font-face {
+	font-family: 'Instrument Serif Fallback';
+	src: local('Times New Roman Italic'), local('Times New Roman');
+	font-weight: 400;
+	font-style: italic;
+	size-adjust: 88.3692%;
+	ascent-override: 112.0299%;
+	descent-override: 35.0801%;
+	line-gap-override: 0%;
+}
