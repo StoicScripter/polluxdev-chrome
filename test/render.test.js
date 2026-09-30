@@ -7,7 +7,7 @@ import { renderFooter, renderHeader } from '../dist/index.js';
 
 test('escapes copy that carries markup characters', () => {
 	const header = renderHeader({ locale: 'en', path: '/' });
-	assert.match(header, /Private Apps &amp; Integrations/);
+	assert.match(header, /Checkout &amp; Discount Logic/);
 	assert.match(header, /Tell us what&#39;s missing/);
 });
 
@@ -31,6 +31,17 @@ test('prefixes site-absolute links with baseUrl, and leaves external ones alone'
 	const footer = renderFooter({ locale: 'en', path: '/', baseUrl: 'https://polluxdev.com' });
 	assert.match(footer, /href="https:\/\/www\.youtube\.com\/@pollux-dev"/);
 	assert.match(footer, /href="https:\/\/polluxdev\.com\/privacy\/"/);
+});
+
+test('German chrome links services to German pages, and the picker pairs them', () => {
+	const header = renderHeader({ locale: 'de', path: '/de/leistungen/shop-audit/' });
+	assert.match(header, /href="\/de\/leistungen\/individuelle-apps\/"/);
+	assert.doesNotMatch(header, /class="pc-card" href="\/services\//);
+	assert.match(header, /data-menu-trigger="services"[^>]*aria-current="true"/);
+	assert.match(header, /class="pc-lang-option" href="\/services\/store-tech-audit\/"/);
+
+	const footer = renderFooter({ locale: 'de', path: '/de/leistungen/shop-audit/' });
+	assert.match(footer, /href="\/de\/leistungen\/reparatur-uebernahme\/"/);
 });
 
 test('cookie settings control is opt-out', () => {

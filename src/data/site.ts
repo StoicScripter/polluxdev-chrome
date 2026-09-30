@@ -1,7 +1,7 @@
 /**
  * Single source of truth for navigation, footer and shared marketing strings.
  *
- * CLAUDE.md §6: the three service descriptions are used by the nav cards, the
+ * CLAUDE.md §6: the service descriptions are used by the nav cards, the
  * footer, the homepage panel and each service page hero — they live here so
  * they cannot drift apart. Nothing in this file may be re-typed in a component.
  *
@@ -12,10 +12,10 @@
  * the header and footer renderers free of translation logic.
  *
  * Destinations are locale-invariant unless a real translated route exists. Today
- * that means /contact, the blog index and the three legal documents, which come
- * from their own registries (./routes.ts); the service and app routes are
- * English-only until those pages are built in German, so a German label pointing
- * at an English path is deliberate, not an oversight. The posts themselves stay
+ * that means /contact, the blog index, the five service pages and the three
+ * legal documents, which come from their own registries (./routes.ts); the app
+ * routes are English-only until those pages are built in German, so a German
+ * label pointing at an English path is deliberate, not an oversight. The posts themselves stay
  * English even from the German index — there is only one of each.
  *
  * Moved here from the site's src/data/site.ts so the Dropby demo can draw the
@@ -25,7 +25,17 @@
  */
 
 import { defaultLocale, type Locale } from '../i18n/config.js';
-import { blogPath, blogRoutes, contactPath, contactRoutes, legalNav } from './routes.js';
+import {
+	blogPath,
+	blogRoutes,
+	contactPath,
+	contactRoutes,
+	legalNav,
+	serviceRoutes,
+	serviceSlugs,
+	servicePath,
+	type ServiceSlug,
+} from './routes.js';
 
 /** A string in every language the site speaks. */
 export type Localized = Record<Locale, string>;
@@ -78,8 +88,8 @@ export const site = {
 	origin: 'https://polluxdev.com',
 	/** Footer positioning line, under the wordmark. */
 	positioning: {
-		en: 'Custom Shopify engineering — private apps, checkout logic, integrations and automations. Built and supported by two engineers.',
-		de: 'Individuelle Shopify-Entwicklung — private Apps, Checkout-Logik, Integrationen und Automatisierungen. Gebaut und betreut von zwei Entwicklern.',
+		en: 'The Shopify engineering team for stores that have outgrown apps and themes. Two engineers, no account managers.',
+		de: 'Das Shopify-Entwicklerteam für Shops, denen Apps und Themes nicht mehr reichen. Zwei Entwickler, keine Account-Manager.',
 	},
 	/** Bottom of the footer, after the year and the wordmark. The site's one emoji. */
 	madeIn: {
@@ -104,57 +114,89 @@ export const site = {
 
 /*
  * `satisfies` rather than a type annotation, so each slug keeps its literal
- * type. The site's src/data/contact.ts asserts against `ServiceSlug` that the
- * contact form's project-focus dropdown offers every service here, so adding a
- * service without adding the option is a compile error there.
+ * type. Slugs and paths come from `serviceRoutes` (./routes.ts); `href` is the
+ * English path, and `translatedRoutes` below swaps in the German one. The
+ * site's src/data/contact.ts asserts against `ServiceSlug` that the contact
+ * form's project-focus dropdown offers every service here, so adding a service
+ * without adding the option is a compile error there.
+ *
+ * Descriptions are sized for a mega-menu card: one or two short sentences.
  */
 export const services = [
 	{
-		slug: 'private-apps-integrations',
+		slug: 'store-tech-audit',
 		label: {
-			en: 'Private Apps & Integrations',
-			de: 'Private Apps & Integrationen',
+			en: 'Store Tech Audit',
+			de: 'Shop-Audit',
 		},
-		href: '/services/private-apps-integrations',
+		href: serviceRoutes['store-tech-audit'].en,
 		description: {
-			en: 'Custom-built admin dashboards, ERP connections, and bespoke logic that replace clunky, off-the-shelf apps.',
-			de: 'Eigene Admin-Oberflächen, ERP-Anbindungen und passgenaue Logik, die sperrige Standard-Apps ersetzen.',
+			en: 'Five working days, a written report and a fixed price for every fix. Credited if you book the work.',
+			de: 'Fünf Werktage, ein schriftlicher Bericht und ein Festpreis für jede Lösung. Wird bei Auftrag angerechnet.',
 		},
 	},
 	{
-		slug: 'checkout-customization',
+		slug: 'checkout-discount-logic',
 		label: {
-			en: 'Checkout Customization',
-			de: 'Checkout-Anpassung',
+			en: 'Checkout & Discount Logic',
+			de: 'Checkout- & Rabattlogik',
 		},
-		href: '/services/checkout-customization',
+		href: serviceRoutes['checkout-discount-logic'].en,
 		description: {
-			en: 'Shopify Functions, checkout extensions and pricing rules that make checkout do what your business actually needs.',
-			de: 'Shopify Functions, Checkout-Erweiterungen und Preisregeln, damit der Checkout genau das tut, was Ihr Geschäft braucht.',
+			en: 'Pricing, discount, delivery and payment rules a discount code can’t express. For Shopify Plus.',
+			de: 'Preis-, Rabatt-, Versand- und Zahlungsregeln, die kein Rabattcode abbildet. Für Shopify Plus.',
 		},
 	},
 	{
-		slug: 'workflow-automations',
+		slug: 'integrations-automations',
 		label: {
-			en: 'Workflow Automations',
-			de: 'Automatisierte Abläufe',
+			en: 'Integrations & Automations',
+			de: 'Integrationen & Automatisierungen',
 		},
-		href: '/services/workflow-automations',
+		href: serviceRoutes['integrations-automations'].en,
 		description: {
-			en: 'The manual jobs your team repeats every day — orders, stock, fulfilment, reporting — handled automatically.',
-			de: 'Die Handgriffe, die Ihr Team täglich wiederholt — Bestellungen, Bestand, Versand, Auswertungen — laufen von selbst.',
+			en: 'Orders, stock, customers and prices in sync with your ERP, 3PL or accounting tool.',
+			de: 'Bestellungen, Bestand, Kunden und Preise im Abgleich mit ERP, Fulfillment und Buchhaltung.',
 		},
 	},
-] as const satisfies readonly Service[];
+	{
+		slug: 'custom-apps',
+		label: {
+			en: 'Custom Apps',
+			de: 'Individuelle Apps',
+		},
+		href: serviceRoutes['custom-apps'].en,
+		description: {
+			en: 'One app built around how your team works — often replacing several you pay for every month.',
+			de: 'Eine App für die Abläufe Ihres Teams — oft anstelle mehrerer, die Sie jeden Monat bezahlen.',
+		},
+	},
+	{
+		slug: 'fix-takeover',
+		label: {
+			en: 'Fix & Takeover',
+			de: 'Reparatur & Übernahme',
+		},
+		href: serviceRoutes['fix-takeover'].en,
+		description: {
+			en: 'An app or integration someone else built is broken or abandoned. We find out why, then repair or rebuild.',
+			de: 'Eine App oder Anbindung von jemand anderem ist kaputt oder verwaist. Wir finden die Ursache und reparieren.',
+		},
+	},
+] as const satisfies readonly (Service & { slug: ServiceSlug })[];
 
-export type ServiceSlug = (typeof services)[number]['slug'];
+/* Every registered route has a service, and so a card, a footer link and a stage. */
+const everyRouteHasAService: Exclude<ServiceSlug, (typeof services)[number]['slug']> extends never
+	? true
+	: Exclude<ServiceSlug, (typeof services)[number]['slug']> = true;
+void everyRouteHasAService;
 
 /** A service in one language, as the menu, footer and homepage section draw it. */
 export interface ResolvedService extends Card {
 	slug: ServiceSlug;
 }
 
-/** The three services, resolved for the language drawn. The only path from `services` to a component. */
+/** The five services, resolved for the language drawn. The only path from `services` to a component. */
 export function resolveServices(locale: Locale = defaultLocale): ResolvedService[] {
 	return services.map((service) => ({ slug: service.slug, ...card(service, locale) }));
 }
@@ -205,6 +247,9 @@ export interface MegaMenu {
 const translatedRoutes: Record<string, (locale: Locale) => string> = {
 	[contactRoutes.en.path]: contactPath,
 	[blogRoutes.en.path]: blogPath,
+	...Object.fromEntries(
+		serviceSlugs.map((slug) => [serviceRoutes[slug].en, (locale: Locale) => servicePath(slug, locale)]),
+	),
 };
 
 const href = (path: string, locale: Locale) => translatedRoutes[path]?.(locale) ?? path;

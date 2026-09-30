@@ -6,7 +6,7 @@ polluxdev.com (Astro) and the Dropby demo (a plain Cloudflare Worker), so both
 draw the same navigation from the same data.
 
 The package also owns the data the chrome reads — nav and footer copy
-(`src/data/site.ts`), the route registries for contact, blog, legal and 404
+(`src/data/site.ts`), the route registries for contact, the service pages, blog, legal and 404
 (`src/data/routes.ts`), and the locale/i18n modules (`src/i18n/*`). The site
 re-exports these rather than keeping its own copies, so every nav string and
 route is written once.

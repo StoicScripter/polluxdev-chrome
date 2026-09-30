@@ -363,11 +363,17 @@
 
 /* Mega-menu card (CLAUDE.md §4): 246×282, --surface-dark, --r-md, title +
    description + a bottom-left arrow chip. The whole card floods --brand on
-   hover — the system's signature move, so it commits fully. */
+   hover — the system's signature move, so it commits fully.
+
+   246px is the width a card grows to, not a fixed width: five services need
+   1286px at 246px and the content row holds 1256px, which left one card alone
+   on a second row. Cards give up a few pixels instead (240px at full width) and
+   only wrap once a row would push them under 184px. */
 .pc-card {
 	display: flex;
 	flex-direction: column;
-	width: 246px;
+	flex: 0 1 246px;
+	min-width: 184px;
 	height: 282px;
 	padding: 22px 20px 20px;
 	background: var(--surface-dark);
@@ -666,7 +672,9 @@ a.pc-lang-option:focus-visible {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+		flex: none;
 		width: 100%;
+		min-width: 0;
 		height: auto;
 		min-height: 44px;
 		padding: 6px 0;

@@ -50,6 +50,38 @@ export function contactPath(locale: Locale = defaultLocale): string {
 	return contactRoutes[locale].path;
 }
 
+/* -------------------------------------------------------------- services */
+
+/**
+ * The five service pages. Only the paths live here — the chrome links to them —
+ * while each page's copy and metadata stay in the site (src/data/services.ts).
+ * The order is the order the menu, footer and homepage section draw them in:
+ * the audit first, because it is the entry offer.
+ *
+ * German pages carry German slugs under /de/leistungen/.
+ */
+export const serviceRoutes = {
+	'store-tech-audit': { en: '/services/store-tech-audit/', de: '/de/leistungen/shop-audit/' },
+	'checkout-discount-logic': {
+		en: '/services/checkout-discount-logic/',
+		de: '/de/leistungen/checkout-rabattlogik/',
+	},
+	'integrations-automations': {
+		en: '/services/integrations-automations/',
+		de: '/de/leistungen/integrationen-automatisierungen/',
+	},
+	'custom-apps': { en: '/services/custom-apps/', de: '/de/leistungen/individuelle-apps/' },
+	'fix-takeover': { en: '/services/fix-takeover/', de: '/de/leistungen/reparatur-uebernahme/' },
+} as const satisfies Record<string, Record<Locale, string>>;
+
+export type ServiceSlug = keyof typeof serviceRoutes;
+
+export const serviceSlugs = Object.keys(serviceRoutes) as ServiceSlug[];
+
+export function servicePath(slug: ServiceSlug, locale: Locale = defaultLocale): string {
+	return serviceRoutes[slug][locale];
+}
+
 /* ------------------------------------------------------------------ blog */
 
 export interface BlogRoute {

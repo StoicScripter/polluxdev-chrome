@@ -15,11 +15,11 @@
  * Imports only the registries and ./config, both of which import nothing but
  * types, so this module stays free of cycles.
  */
-import { blogRoutes, contactRoutes, legalDocs, legalOrder, notFoundRoutes } from '../data/routes.js';
+import { blogRoutes, contactRoutes, legalDocs, legalOrder, notFoundRoutes, serviceRoutes, serviceSlugs, } from '../data/routes.js';
 import { localeNames, localeTags, locales } from './config.js';
 /**
  * Every page the site serves, keyed by nothing: the row is found by matching any
- * of its own paths. Pages absent from this table (the service pages, the
+ * of its own paths. Pages absent from this table (the app pages, the
  * individual posts) are English-only for now and fall through to the default
  * below.
  */
@@ -32,6 +32,7 @@ const pages = [
         de: legalDocs[id].locales.de.path,
     })),
     { en: contactRoutes.en.path, de: contactRoutes.de.path },
+    ...serviceSlugs.map((slug) => ({ en: serviceRoutes[slug].en, de: serviceRoutes[slug].de })),
     // The index only. A post is written once, in English, and lives at
     // /blog/<slug> whichever index the reader arrived from.
     { en: blogRoutes.en.path, de: blogRoutes.de.path },

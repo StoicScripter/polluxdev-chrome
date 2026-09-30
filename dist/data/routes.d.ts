@@ -26,6 +26,39 @@ export interface ContactRoute {
 }
 export declare const contactRoutes: Record<Locale, ContactRoute>;
 export declare function contactPath(locale?: Locale): string;
+/**
+ * The five service pages. Only the paths live here — the chrome links to them —
+ * while each page's copy and metadata stay in the site (src/data/services.ts).
+ * The order is the order the menu, footer and homepage section draw them in:
+ * the audit first, because it is the entry offer.
+ *
+ * German pages carry German slugs under /de/leistungen/.
+ */
+export declare const serviceRoutes: {
+    readonly 'store-tech-audit': {
+        readonly en: "/services/store-tech-audit/";
+        readonly de: "/de/leistungen/shop-audit/";
+    };
+    readonly 'checkout-discount-logic': {
+        readonly en: "/services/checkout-discount-logic/";
+        readonly de: "/de/leistungen/checkout-rabattlogik/";
+    };
+    readonly 'integrations-automations': {
+        readonly en: "/services/integrations-automations/";
+        readonly de: "/de/leistungen/integrationen-automatisierungen/";
+    };
+    readonly 'custom-apps': {
+        readonly en: "/services/custom-apps/";
+        readonly de: "/de/leistungen/individuelle-apps/";
+    };
+    readonly 'fix-takeover': {
+        readonly en: "/services/fix-takeover/";
+        readonly de: "/de/leistungen/reparatur-uebernahme/";
+    };
+};
+export type ServiceSlug = keyof typeof serviceRoutes;
+export declare const serviceSlugs: ServiceSlug[];
+export declare function servicePath(slug: ServiceSlug, locale?: Locale): string;
 export interface BlogRoute {
     /** Trailing slashes throughout: the build writes directories, not .html files. */
     path: string;

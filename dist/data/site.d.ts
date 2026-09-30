@@ -1,7 +1,7 @@
 /**
  * Single source of truth for navigation, footer and shared marketing strings.
  *
- * CLAUDE.md §6: the three service descriptions are used by the nav cards, the
+ * CLAUDE.md §6: the service descriptions are used by the nav cards, the
  * footer, the homepage panel and each service page hero — they live here so
  * they cannot drift apart. Nothing in this file may be re-typed in a component.
  *
@@ -12,10 +12,10 @@
  * the header and footer renderers free of translation logic.
  *
  * Destinations are locale-invariant unless a real translated route exists. Today
- * that means /contact, the blog index and the three legal documents, which come
- * from their own registries (./routes.ts); the service and app routes are
- * English-only until those pages are built in German, so a German label pointing
- * at an English path is deliberate, not an oversight. The posts themselves stay
+ * that means /contact, the blog index, the five service pages and the three
+ * legal documents, which come from their own registries (./routes.ts); the app
+ * routes are English-only until those pages are built in German, so a German
+ * label pointing at an English path is deliberate, not an oversight. The posts themselves stay
  * English even from the German index — there is only one of each.
  *
  * Moved here from the site's src/data/site.ts so the Dropby demo can draw the
@@ -24,6 +24,7 @@
  * now lives beside those options, in the site's src/data/contact.ts.
  */
 import { type Locale } from '../i18n/config.js';
+import { type ServiceSlug } from './routes.js';
 /** A string in every language the site speaks. */
 export type Localized = Record<Locale, string>;
 export interface NavLink {
@@ -68,8 +69,8 @@ export declare const site: {
     readonly origin: "https://polluxdev.com";
     /** Footer positioning line, under the wordmark. */
     readonly positioning: {
-        readonly en: "Custom Shopify engineering — private apps, checkout logic, integrations and automations. Built and supported by two engineers.";
-        readonly de: "Individuelle Shopify-Entwicklung — private Apps, Checkout-Logik, Integrationen und Automatisierungen. Gebaut und betreut von zwei Entwicklern.";
+        readonly en: "The Shopify engineering team for stores that have outgrown apps and themes. Two engineers, no account managers.";
+        readonly de: "Das Shopify-Entwicklerteam für Shops, denen Apps und Themes nicht mehr reichen. Zwei Entwickler, keine Account-Manager.";
     };
     /** Bottom of the footer, after the year and the wordmark. The site's one emoji. */
     readonly madeIn: {
@@ -90,45 +91,66 @@ export declare const site: {
     readonly shopify: "https://apps.shopify.com/partners/pollux4";
 };
 export declare const services: readonly [{
-    readonly slug: "private-apps-integrations";
+    readonly slug: "store-tech-audit";
     readonly label: {
-        readonly en: "Private Apps & Integrations";
-        readonly de: "Private Apps & Integrationen";
+        readonly en: "Store Tech Audit";
+        readonly de: "Shop-Audit";
     };
-    readonly href: "/services/private-apps-integrations";
+    readonly href: "/services/store-tech-audit/";
     readonly description: {
-        readonly en: "Custom-built admin dashboards, ERP connections, and bespoke logic that replace clunky, off-the-shelf apps.";
-        readonly de: "Eigene Admin-Oberflächen, ERP-Anbindungen und passgenaue Logik, die sperrige Standard-Apps ersetzen.";
+        readonly en: "Five working days, a written report and a fixed price for every fix. Credited if you book the work.";
+        readonly de: "Fünf Werktage, ein schriftlicher Bericht und ein Festpreis für jede Lösung. Wird bei Auftrag angerechnet.";
     };
 }, {
-    readonly slug: "checkout-customization";
+    readonly slug: "checkout-discount-logic";
     readonly label: {
-        readonly en: "Checkout Customization";
-        readonly de: "Checkout-Anpassung";
+        readonly en: "Checkout & Discount Logic";
+        readonly de: "Checkout- & Rabattlogik";
     };
-    readonly href: "/services/checkout-customization";
+    readonly href: "/services/checkout-discount-logic/";
     readonly description: {
-        readonly en: "Shopify Functions, checkout extensions and pricing rules that make checkout do what your business actually needs.";
-        readonly de: "Shopify Functions, Checkout-Erweiterungen und Preisregeln, damit der Checkout genau das tut, was Ihr Geschäft braucht.";
+        readonly en: "Pricing, discount, delivery and payment rules a discount code can’t express. For Shopify Plus.";
+        readonly de: "Preis-, Rabatt-, Versand- und Zahlungsregeln, die kein Rabattcode abbildet. Für Shopify Plus.";
     };
 }, {
-    readonly slug: "workflow-automations";
+    readonly slug: "integrations-automations";
     readonly label: {
-        readonly en: "Workflow Automations";
-        readonly de: "Automatisierte Abläufe";
+        readonly en: "Integrations & Automations";
+        readonly de: "Integrationen & Automatisierungen";
     };
-    readonly href: "/services/workflow-automations";
+    readonly href: "/services/integrations-automations/";
     readonly description: {
-        readonly en: "The manual jobs your team repeats every day — orders, stock, fulfilment, reporting — handled automatically.";
-        readonly de: "Die Handgriffe, die Ihr Team täglich wiederholt — Bestellungen, Bestand, Versand, Auswertungen — laufen von selbst.";
+        readonly en: "Orders, stock, customers and prices in sync with your ERP, 3PL or accounting tool.";
+        readonly de: "Bestellungen, Bestand, Kunden und Preise im Abgleich mit ERP, Fulfillment und Buchhaltung.";
+    };
+}, {
+    readonly slug: "custom-apps";
+    readonly label: {
+        readonly en: "Custom Apps";
+        readonly de: "Individuelle Apps";
+    };
+    readonly href: "/services/custom-apps/";
+    readonly description: {
+        readonly en: "One app built around how your team works — often replacing several you pay for every month.";
+        readonly de: "Eine App für die Abläufe Ihres Teams — oft anstelle mehrerer, die Sie jeden Monat bezahlen.";
+    };
+}, {
+    readonly slug: "fix-takeover";
+    readonly label: {
+        readonly en: "Fix & Takeover";
+        readonly de: "Reparatur & Übernahme";
+    };
+    readonly href: "/services/fix-takeover/";
+    readonly description: {
+        readonly en: "An app or integration someone else built is broken or abandoned. We find out why, then repair or rebuild.";
+        readonly de: "Eine App oder Anbindung von jemand anderem ist kaputt oder verwaist. Wir finden die Ursache und reparieren.";
     };
 }];
-export type ServiceSlug = (typeof services)[number]['slug'];
 /** A service in one language, as the menu, footer and homepage section draw it. */
 export interface ResolvedService extends Card {
     slug: ServiceSlug;
 }
-/** The three services, resolved for the language drawn. The only path from `services` to a component. */
+/** The five services, resolved for the language drawn. The only path from `services` to a component. */
 export declare function resolveServices(locale?: Locale): ResolvedService[];
 export declare const apps: App[];
 export declare const liveApps: App[];
