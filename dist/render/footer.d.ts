@@ -1,7 +1,6 @@
 /**
- * Site footer. The heading/link weights are deliberately inverted from the rest
- * of the site (light 400 headings, bold black links) — see the site's
- * CLAUDE.md §6.
+ * Site footer, on the dark panel ground: bold off-white group names over
+ * off-white links, one centred column on phones — see the site's CLAUDE.md §6.
  *
  * The Languages column is the header picker without the dropdown: the same
  * options, from the same registry, so the two can never offer different

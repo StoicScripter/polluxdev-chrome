@@ -22,6 +22,12 @@ test('hides the header CTA on the page it points at', () => {
 	assert.match(renderHeader({ locale: 'en', path: '/' }), /pc-cta/);
 });
 
+test('repeats the CTA at the foot of the nav panel, inside the nav', () => {
+	const header = renderHeader({ locale: 'en', path: '/' });
+	assert.match(header, /<\/ul><a class="pc-btn pc-btn-primary pc-cta-mobile" href="\/contact\/">Book a call<\/a><\/nav>/);
+	assert.doesNotMatch(renderHeader({ locale: 'de', path: '/de/kontakt/' }), /pc-cta-mobile/);
+});
+
 test('prefixes site-absolute links with baseUrl, and leaves external ones alone', () => {
 	const header = renderHeader({ locale: 'de', path: '/apps/dropby-store-locator/', baseUrl: 'https://polluxdev.com/' });
 	assert.match(header, /href="https:\/\/polluxdev\.com\/de\/kontakt\/"/);

@@ -1,6 +1,10 @@
 /**
  * Sticky site header. Services ± · Apps ± · Company ± · language · [CTA].
  *
+ * Below 960px the bar holds only the centred wordmark and the hamburger; the
+ * CTA moves to the foot of the nav panel (`pc-cta-mobile`, a second copy that
+ * the stylesheet shows only there) and the language picker to its top.
+ *
  * Menus open on click, never on hover: the ± chip promises a committed toggle,
  * and click is the only pattern that works on touch. Without JavaScript the
  * menus stay closed and every destination remains reachable from the footer —

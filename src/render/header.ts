@@ -1,6 +1,10 @@
 /**
  * Sticky site header. Services ± · Apps ± · Company ± · language · [CTA].
  *
+ * Below 960px the bar holds only the centred wordmark and the hamburger; the
+ * CTA moves to the foot of the nav panel (`pc-cta-mobile`, a second copy that
+ * the stylesheet shows only there) and the language picker to its top.
+ *
  * Menus open on click, never on hover: the ± chip promises a committed toggle,
  * and click is the only pattern that works on touch. Without JavaScript the
  * menus stay closed and every destination remains reachable from the footer —
@@ -100,7 +104,10 @@ export function renderHeader({ locale = defaultLocale, path, baseUrl = '', alter
 	return html`<header class="site-header" data-header><div class="pc-container pc-bar"><a class="pc-wordmark" href="${link('/')}">${site.name}</a><nav class="pc-primary" id="primary-nav" aria-label="${t('nav.primary', locale)}"><ul class="pc-nav-list" data-nav-list>${sections.map(
 		(menu) =>
 			html`<li class="pc-nav-item" data-menu-item="${menu.id}"><button type="button" class="pc-trigger" data-menu-trigger="${menu.id}" aria-expanded="false" aria-controls="menu-${menu.id}"${attr('aria-current', currentMenu === menu.id && 'true')}><span class="pc-trigger-label" data-nav-label>${menu.label}</span>${toggleChip()}</button>${megaMenu(menu, link)}</li>`,
-	)}${languagePicker(locale, path, link, alternates)}</ul></nav><div class="pc-actions">${
+	)}${languagePicker(locale, path, link, alternates)}</ul>${
+		!onCtaTarget &&
+		html`<a class="pc-btn pc-btn-primary pc-cta-mobile" href="${link(cta.href)}">${cta.label}</a>`
+	}</nav><div class="pc-actions">${
 		!onCtaTarget &&
 		html`<a class="pc-btn pc-btn-primary pc-size-nav pc-cta" href="${link(cta.href)}">${cta.label}</a>`
 	}<button type="button" class="pc-mobile-toggle" data-mobile-toggle aria-expanded="false" aria-controls="primary-nav"><span class="pc-visually-hidden">${t('nav.menu', locale)}</span><span class="pc-icon-button" aria-hidden="true"><svg class="pc-burger" viewBox="0 0 17 17" width="17" height="17"><line class="pc-burger-bar pc-burger-top" x1="1.5" y1="4" x2="15.5" y2="4"></line><line class="pc-burger-bar pc-burger-mid" x1="1.5" y1="8.5" x2="15.5" y2="8.5"></line><line class="pc-burger-bar pc-burger-bot" x1="1.5" y1="13" x2="15.5" y2="13"></line></svg></span></button></div></div><span class="pc-nav-rail" data-nav-rail aria-hidden="true"></span></header>`.toString();

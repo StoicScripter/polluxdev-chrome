@@ -1,7 +1,6 @@
 /**
- * Site footer. The heading/link weights are deliberately inverted from the rest
- * of the site (light 400 headings, bold black links) — see the site's
- * CLAUDE.md §6.
+ * Site footer, on the dark panel ground: bold off-white group names over
+ * off-white links, one centred column on phones — see the site's CLAUDE.md §6.
  *
  * The Languages column is the header picker without the dropdown: the same
  * options, from the same registry, so the two can never offer different
@@ -51,9 +50,7 @@ export function renderFooter({
 	const nav = footer(locale);
 	const languages = languageChoices(path, locale, alternates);
 
-	// A sibling rule rather than a border on the inner container, so the hairline
-	// runs the full width of the viewport while the content stays at 1320px.
-	return html`<footer class="site-footer"><div class="pc-rule" aria-hidden="true"></div><div class="pc-container pc-inner"><div class="pc-top"><div class="pc-brand"><p class="pc-wordmark">${site.name}</p><p class="pc-positioning">${site.positioning[locale]}</p></div><nav class="pc-columns" aria-label="${t('nav.footer', locale)}">${nav.columns.map(
+	return html`<footer class="site-footer"><div class="pc-container pc-inner"><div class="pc-top"><div class="pc-brand"><p class="pc-wordmark">${site.name}</p><p class="pc-positioning">${site.positioning[locale]}</p></div><nav class="pc-columns" aria-label="${t('nav.footer', locale)}">${nav.columns.map(
 		(column) =>
 			html`<div class="pc-column"><h2 class="pc-column-heading">${column.heading}</h2><ul class="pc-column-links">${column.links.map(
 				(item) => html`<li><a href="${link(item.href)}">${item.label}</a></li>`,

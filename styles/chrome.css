@@ -282,6 +282,12 @@
 	margin-left: auto;
 }
 
+/* The CTA's second copy, at the foot of the mobile nav panel. It exists only
+   where the panel does; the query below 960px draws it. */
+.pc-cta-mobile {
+	display: none;
+}
+
 /* Only offered when the script that drives it is running. The 38px chrome is
    the system's icon button; the 44px button around it is the hit target. */
 .pc-mobile-toggle {
@@ -588,8 +594,29 @@ a.pc-lang-option:focus-visible {
 /* --------------------------------------------------- header below 960px */
 
 @media (max-width: 960px) {
+	/* Three tracks, the outer two equal, so the wordmark sits on the bar's true
+	   centre whatever the hamburger measures. The nav is position: fixed down
+	   here and takes no track; the wordmark and the actions are the only items. */
 	.pc-bar {
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
 		gap: 16px;
+	}
+
+	.site-header .pc-wordmark {
+		grid-column: 2;
+	}
+
+	.pc-actions {
+		grid-column: 3;
+		justify-self: end;
+		margin-left: 0;
+	}
+
+	/* The CTA leaves the bar for the foot of the panel. Without the script there
+	   is no panel to hold it, so the bar keeps it rather than losing it. */
+	html[data-js] .pc-actions .pc-cta {
+		display: none;
 	}
 
 	html[data-js] .pc-mobile-toggle {
@@ -612,7 +639,9 @@ a.pc-lang-option:focus-visible {
 	}
 
 	.site-header[data-mobile-open] .pc-primary {
-		display: block;
+		display: flex;
+		flex-direction: column;
+		gap: 28px;
 	}
 
 	.pc-nav-list {
@@ -626,11 +655,29 @@ a.pc-lang-option:focus-visible {
 		padding-bottom: 12px;
 	}
 
+	/* Label and ± chip travel together on the row's centre line. */
 	.pc-trigger {
 		width: 100%;
-		justify-content: space-between;
+		justify-content: center;
 		min-height: 56px;
 		font-size: 17px;
+	}
+
+	/* The section you have open is stated by weight as well as by the chip.
+	   Mobile only: on the desktop bar a heavier label would widen and shove
+	   its neighbours along the row. */
+	.pc-trigger[aria-expanded='true'],
+	.pc-lang-trigger[aria-expanded='true'] {
+		font-weight: 700;
+	}
+
+	.pc-cta-mobile {
+		display: flex;
+		width: 100%;
+		min-height: 52px;
+		padding: 14px 26px;
+		font-size: 16px;
+		font-weight: 600;
 	}
 
 	/* Back under the word: in the stacked panel each item is its own row, and
@@ -672,6 +719,7 @@ a.pc-lang-option:focus-visible {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+		justify-content: center;
 		flex: none;
 		width: 100%;
 		min-width: 0;
@@ -707,8 +755,11 @@ a.pc-lang-option:focus-visible {
 	}
 
 	/* Inside the mobile panel the picker is another nav row, and its list is
-	   an accordion body in the flow — not an overlay. */
+	   an accordion body in the flow — not an overlay. It comes first: it is last
+	   in the DOM so the desktop bar ends on it, and order moves it without the
+	   markup (or the nav script, which never reads DOM order) knowing. */
 	.pc-lang {
+		order: -1;
 		margin-left: 0;
 		border-bottom: 1px solid var(--line);
 		padding-bottom: 12px;
@@ -716,14 +767,9 @@ a.pc-lang-option:focus-visible {
 
 	.pc-lang-trigger {
 		width: 100%;
-		justify-content: flex-start;
+		justify-content: center;
 		min-height: 56px;
 		font-size: 17px;
-	}
-
-	/* Pushed to the far edge, where the ± chips of the menus above sit. */
-	.pc-chevron {
-		margin-left: auto;
 	}
 
 	.pc-lang-panel {
@@ -736,8 +782,10 @@ a.pc-lang-option:focus-visible {
 	}
 
 	.pc-lang-option {
+		align-items: center;
 		padding-inline: 0;
 		font-size: 16px;
+		text-align: center;
 	}
 
 	a.pc-lang-option:hover,
@@ -750,24 +798,20 @@ a.pc-lang-option:focus-visible {
 	}
 }
 
-@media (max-width: 380px) {
-	.pc-actions .pc-cta {
-		padding-inline: 14px;
-	}
-}
+
 
 /* ---------------------------------------------------------------- footer */
 
-/* The separation above the footer is this section's own padding, so the
-   hairline lands on the footer rather than floating in the gap. */
+/* The footer is on the dark panel ground, so a page closes on one dark block:
+   the site's closing panel runs flush into it. Nothing on top of it here — no
+   padding, no rule — because the lead-in is the panel above, not a gap. */
 .site-footer {
-	background: var(--bg);
-	padding-top: 120px;
+	background: var(--surface-panel);
+	color: var(--ink-on-dark);
 }
 
-.pc-rule {
-	height: 1px;
-	background: var(--line);
+.site-footer :focus-visible {
+	outline-color: var(--brand-on-dark);
 }
 
 .pc-inner {
@@ -800,7 +844,7 @@ a.pc-lang-option:focus-visible {
 	font-family: var(--font-archivo);
 	font-weight: 800;
 	letter-spacing: -.02em;
-	color: var(--ink);
+	color: var(--ink-on-dark);
 	line-height: 1.2;
 }
 
@@ -810,7 +854,7 @@ a.pc-lang-option:focus-visible {
 	font-size: 15px;
 	font-family: var(--font-archivo);
 	line-height: 1.6;
-	color: var(--ink-body);
+	color: var(--ink-muted-dark);
 }
 
 .pc-column {
@@ -819,13 +863,15 @@ a.pc-lang-option:focus-visible {
 	gap: 10px;
 }
 
-/* Deliberately inverted: light heading, bold links. */
+/* The group's name in the footer's full ink and the heaviest weight, so each
+   column reads as a labelled group on the dark ground; the links under it
+   stay at 500. */
 .site-footer .pc-column-heading {
 	font-family: var(--face-body);
 	font-size: 15px;
-	font-weight: 400;
+	font-weight: 700;
 	letter-spacing: 0;
-	color: var(--ink-muted);
+	color: var(--ink-on-dark);
 }
 
 .pc-column-links,
@@ -855,7 +901,7 @@ a.pc-lang-option:focus-visible {
 	min-height: 36px;
 	font-size: 14.5px;
 	font-weight: 500;
-	color: var(--ink);
+	color: var(--ink-on-dark);
 }
 
 @media (any-pointer: coarse) {
@@ -910,7 +956,7 @@ a.pc-lang-option:focus-visible {
 	padding-block: 4px;
 	font-size: 14.5px;
 	font-weight: 500;
-	color: var(--ink-subtle);
+	color: var(--ink-muted-dark);
 }
 
 .site-footer .pc-hint {
@@ -939,7 +985,7 @@ a.pc-lang-option:focus-visible {
 .pc-copyright {
 	font-size: 14px;
 	font-family: var(--font-archivo);
-	color: var(--ink-muted);
+	color: var(--ink-muted-dark);
 }
 
 /* Labels for the two bottom-row lists. Drawn only where that row breaks into
@@ -964,7 +1010,7 @@ a.pc-lang-option:focus-visible {
 }
 
 /* The marks are full-bleed brand logos: each carries its own silhouette with
-   the glyph knocked out, so the page shows through rather than a second
+   the glyph knocked out, so the ground shows through rather than a second
    chip sitting behind it. Colour is inherited from the link. */
 .pc-social-mark {
 	display: flex;
@@ -986,37 +1032,62 @@ a.pc-lang-option:focus-visible {
 }
 
 @media (max-width: 720px) {
-	.pc-columns {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 32px;
-	}
-}
-
-@media (max-width: 560px) {
-	/* Everything below the brand block is now one stack of headed link
-	   groups — Services, Company and Languages out of .pc-columns, then Legal
-	   and Social out of .pc-bottom — so the space between any two of them is a
-	   single value rather than three that happen to agree. .pc-inner carries
-	   the Languages-to-Legal gap, which is the seam between the two
+	/* One centred column. Everything below the brand block is one stack of
+	   headed link groups — Services, Company and Languages out of .pc-columns,
+	   then Legal and Social out of .pc-bottom — so the space between any two of
+	   them is a single value rather than three that happen to agree. .pc-inner
+	   carries the Languages-to-Legal gap, which is the seam between the two
 	   containers and the one that used to be twice everything else. */
 	.site-footer {
-		--stack-gap: 28px;
+		--stack-gap: 32px;
+		text-align: center;
 	}
 
 	.pc-inner {
+		gap: var(--stack-gap);
+		padding-block: 56px 36px;
+	}
+
+	.pc-top,
+	.pc-columns {
 		gap: var(--stack-gap);
 	}
 
 	.pc-columns {
 		grid-template-columns: 1fr;
-		gap: var(--stack-gap);
+	}
+
+	.pc-brand,
+	.pc-column,
+	.pc-column-links,
+	.site-footer .pc-unavailable {
+		align-items: center;
+	}
+
+	/* A short label ("Blog", "FAQ") is narrower than its 44px target; centred
+	   inside it, the word sits on the column's axis instead of the box's
+	   left edge. */
+	.pc-column-links a,
+	.pc-legal-links a,
+	.pc-legal-links button {
+		justify-content: center;
+	}
+
+	/* The label is what lines up with the column above, so the mark hangs off
+	   to its left: the end padding matches the mark plus its gap (24 + 10). */
+	.pc-social a {
+		padding-inline-end: 34px;
+	}
+
+	.site-footer .pc-hint {
+		margin-inline: auto;
 	}
 
 	/* The bottom row becomes two more headed link columns, reading straight on
 	   from the three above it, with the copyright line closing the footer. */
 	.pc-bottom {
 		flex-direction: column;
-		align-items: stretch;
+		align-items: center;
 		gap: var(--stack-gap);
 	}
 
@@ -1031,6 +1102,7 @@ a.pc-lang-option:focus-visible {
 	.pc-social-block {
 		display: flex;
 		flex-direction: column;
+		align-items: center;
 		gap: 10px;
 	}
 
@@ -1042,11 +1114,10 @@ a.pc-lang-option:focus-visible {
 		order: 2;
 	}
 
-	/* Last and centred: the one line down here that is a statement rather
-	   than a destination. */
+	/* Last: the one line down here that is a statement rather than a
+	   destination. */
 	.pc-copyright {
 		order: 3;
-		text-align: center;
 		font-weight: 500;
 	}
 
@@ -1056,7 +1127,12 @@ a.pc-lang-option:focus-visible {
 	.pc-legal-links,
 	.pc-social {
 		flex-direction: column;
+		align-items: center;
 		gap: 0;
+	}
+
+	.pc-cookie-settings {
+		text-align: center;
 	}
 
 	.site-footer .pc-bottom-heading {
