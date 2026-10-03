@@ -27,6 +27,16 @@ export function languageChoices(path: string, locale: Locale, alternates?: Alter
 }
 
 /**
+ * Whether the page exists in any language besides the one being read. When it
+ * does not, the picker and the footer's Languages column are left out: a
+ * switch whose only other option is "not translated yet" is a control with
+ * nothing to do.
+ */
+export function hasTranslation(options: LanguageOption[]): boolean {
+	return options.some((option) => !option.current && option.href);
+}
+
+/**
  * Resolves a site-absolute href for wherever the chrome is being drawn. On
  * polluxdev.com `baseUrl` is empty and links stay root-relative; anywhere else
  * (the Dropby demo) they are prefixed with the live origin, because a

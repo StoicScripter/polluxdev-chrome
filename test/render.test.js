@@ -14,7 +14,27 @@ test('escapes copy that carries markup characters', () => {
 test('marks the section that owns the page, and only that one', () => {
 	const header = renderHeader({ locale: 'en', path: '/apps/dropby-store-locator/' });
 	assert.match(header, /data-menu-trigger="apps"[^>]*aria-current="true"/);
-	assert.equal(header.match(/aria-current="true"/g)?.length, 2); // the trigger + the current language
+	assert.equal(header.match(/aria-current="true"/g)?.length, 1); // English-only page: no picker to mark
+});
+
+test('draws the language switches only where the page is translated', () => {
+	for (const path of ['/', '/apps/dropby-store-locator/', '/about/']) {
+		assert.doesNotMatch(renderHeader({ locale: 'en', path }), /pc-lang/, path);
+		assert.doesNotMatch(renderFooter({ locale: 'en', path }), /pc-column-languages/, path);
+	}
+
+	assert.match(renderHeader({ locale: 'en', path: '/contact/' }), /class="pc-lang-option" href="\/de\/kontakt\/"/);
+	assert.match(renderFooter({ locale: 'en', path: '/contact/' }), /pc-column-languages/);
+
+	// The demo passes its own alternates, and gets the switch whenever it names a second language.
+	assert.match(renderHeader({ locale: 'en', path: '/apps/dropby-store-locator/', alternates: { en: '/', de: '/de/' } }), /pc-lang/);
+});
+
+test('the Company column links only to pages that are built', () => {
+	const footer = renderFooter({ locale: 'en', path: '/' });
+	assert.match(footer, /href="\/about\/">About</);
+	assert.match(footer, /href="\/#faq">FAQ</);
+	assert.doesNotMatch(footer, /how-we-work|href="\/apps\/"|\/docs\//);
 });
 
 test('hides the header CTA on the page it points at', () => {

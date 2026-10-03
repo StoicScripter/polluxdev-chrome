@@ -1073,10 +1073,14 @@ a.pc-lang-option:focus-visible {
 		justify-content: center;
 	}
 
-	/* The label is what lines up with the column above, so the mark hangs off
-	   to its left: the end padding matches the mark plus its gap (24 + 10). */
-	.pc-social a {
-		padding-inline-end: 34px;
+	/* Two short endonyms side by side, on one 44px row rather than two: the
+	   list is a pair, so it cannot wrap ragged, and the mobile nav panel opens
+	   on the same switch. Wraps only if a third language ever joins it. */
+	.pc-column-languages .pc-column-links {
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0 32px;
 	}
 
 	.site-footer .pc-hint {
@@ -1124,11 +1128,17 @@ a.pc-lang-option:focus-visible {
 	/* Back to the footer's default stacked-link treatment. A row of three
 	   legal links wraps into ragged pairs at this width. Flush rows, so each
 	   link keeps its 44px min-height without the list going loose. */
-	.pc-legal-links,
-	.pc-social {
+	.pc-legal-links {
 		flex-direction: column;
 		align-items: center;
 		gap: 0;
+	}
+
+	/* The social pair stays a row, as the languages do: two marked links fit
+	   side by side at 320px, and the row is centred as a whole. */
+	.pc-social {
+		justify-content: center;
+		gap: 32px;
 	}
 
 	.pc-cookie-settings {

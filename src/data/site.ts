@@ -298,7 +298,7 @@ const appsCards: NavCard[] = [
 const companyCards: NavCard[] = [
 	{
 		label: { en: 'About', de: 'Über uns' },
-		href: '/about',
+		href: '/about/',
 		description: {
 			en: 'Who we are, how we work, and why there is no account manager between us.',
 			de: 'Wer wir sind, wie wir arbeiten und warum zwischen uns kein Account-Manager sitzt.',
@@ -366,12 +366,14 @@ const footerHeadings = {
 	social: { en: 'Social', de: 'Social Media' },
 } satisfies Record<string, Localized>;
 
+/**
+ * Only pages that are built. The apps index, the app docs and a /#how-we-work
+ * section were listed here before any of them existed; a link comes back the
+ * day its page ships, not before.
+ */
 const companyLinks: NavLink[] = [
-	{ label: { en: 'About', de: 'Über uns' }, href: '/about' },
-	{ label: { en: 'Our apps', de: 'Unsere Apps' }, href: '/apps/' },
+	{ label: { en: 'About', de: 'Über uns' }, href: '/about/' },
 	{ label: { en: 'Blog', de: 'Blog' }, href: blogPath() },
-	{ label: { en: 'App docs', de: 'App-Dokumentation' }, href: '/apps/dropby-store-locator/docs/' },
-	{ label: { en: 'How we work', de: 'So arbeiten wir' }, href: '/#how-we-work' },
 	{ label: { en: 'FAQ', de: 'Häufige Fragen' }, href: '/#faq' },
 	{ label: { en: contactRoutes.en.navLabel, de: contactRoutes.de.navLabel }, href: contactPath() },
 ];

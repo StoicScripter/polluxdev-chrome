@@ -5,7 +5,8 @@
  * The Languages column is the header picker without the dropdown: the same
  * options, from the same registry, so the two can never offer different
  * destinations. A language this page has no translation in is stated as text
- * with a reason rather than linked to a page that isn't built.
+ * with a reason rather than linked to a page that isn't built. A page with no
+ * translation at all gets no Languages column, as it gets no picker.
  *
  * Ported from the site's Footer.astro; styles are styles/chrome.css.
  */

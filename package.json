@@ -1,6 +1,6 @@
 {
   "name": "@polluxdev/chrome",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "The pollux|dev site header and footer as framework-free HTML render functions, stylesheet and behaviour script. Shared by polluxdev.com and the Dropby demo.",
   "type": "module",
   "private": true,

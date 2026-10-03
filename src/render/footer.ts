@@ -5,7 +5,8 @@
  * The Languages column is the header picker without the dropdown: the same
  * options, from the same registry, so the two can never offer different
  * destinations. A language this page has no translation in is stated as text
- * with a reason rather than linked to a page that isn't built.
+ * with a reason rather than linked to a page that isn't built. A page with no
+ * translation at all gets no Languages column, as it gets no picker.
  *
  * Ported from the site's Footer.astro; styles are styles/chrome.css.
  */
@@ -14,7 +15,7 @@ import { footer, site } from '../data/site.js';
 import { defaultLocale, type Locale } from '../i18n/config.js';
 import { t } from '../i18n/ui.js';
 import { attr, html } from '../html.js';
-import { languageChoices, linkResolver, type Alternates } from './parts.js';
+import { hasTranslation, languageChoices, linkResolver, type Alternates } from './parts.js';
 
 export interface FooterOptions {
 	/** The language this page is being read in. */
@@ -55,14 +56,17 @@ export function renderFooter({
 			html`<div class="pc-column"><h2 class="pc-column-heading">${column.heading}</h2><ul class="pc-column-links">${column.links.map(
 				(item) => html`<li><a href="${link(item.href)}">${item.label}</a></li>`,
 			)}</ul></div>`,
-	)}<div class="pc-column"><h2 class="pc-column-heading">${nav.languages.heading}</h2><ul class="pc-column-links">${languages.map(
+	)}${
+		hasTranslation(languages) &&
+		html`<div class="pc-column pc-column-languages"><h2 class="pc-column-heading">${nav.languages.heading}</h2><ul class="pc-column-links">${languages.map(
 		(language) =>
 			html`<li>${
 				language.href
 					? html`<a href="${link(language.href)}" lang="${language.tag}" hreflang="${language.tag}"${attr('aria-current', language.current && 'true')}>${language.label}</a>`
 					: html`<span class="pc-unavailable" aria-disabled="true"><span lang="${language.tag}">${language.label}</span><span class="pc-hint">${t('language.unavailable', locale)}</span></span>`
 			}</li>`,
-	)}</ul></div></nav></div><div class="pc-bottom"><div class="pc-legal"><p class="pc-copyright">© ${year} ${site.name} — ${site.madeIn[locale]}</p><div class="pc-legal-block"><h2 class="pc-column-heading pc-bottom-heading">${nav.legal.heading}</h2><ul class="pc-legal-links">${nav.legal.links.map(
+	)}</ul></div>`
+	}</nav></div><div class="pc-bottom"><div class="pc-legal"><p class="pc-copyright">© ${year} ${site.name} — ${site.madeIn[locale]}</p><div class="pc-legal-block"><h2 class="pc-column-heading pc-bottom-heading">${nav.legal.heading}</h2><ul class="pc-legal-links">${nav.legal.links.map(
 		(item) => html`<li><a href="${link(item.href)}">${item.label}</a></li>`,
 	)}${
 		cookieSettings &&

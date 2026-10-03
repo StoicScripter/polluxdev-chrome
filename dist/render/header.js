@@ -19,7 +19,7 @@ import { defaultLocale } from '../i18n/config.js';
 import { localePaths, normalizePath } from '../i18n/routes.js';
 import { t } from '../i18n/ui.js';
 import { attr, html } from '../html.js';
-import { languageChoices, linkResolver, megaMenu, toggleChip } from './parts.js';
+import { hasTranslation, languageChoices, linkResolver, megaMenu, toggleChip } from './parts.js';
 /**
  * The language picker: a globe, the language you are reading in, and the
  * dropdown holding both languages. It rides the mega menus' `data-menu-trigger`
@@ -28,9 +28,12 @@ import { languageChoices, linkResolver, megaMenu, toggleChip } from './parts.js'
  * The chevron is the one place in the system a chevron appears; it is a select,
  * not a disclosure. A language with no translation of this page is drawn as
  * muted text with a reason — the picker never links to a page that isn't built.
+ * A page with no translation at all gets no picker.
  */
 function languagePicker(locale, path, link, alternates) {
     const options = languageChoices(path, locale, alternates);
+    if (!hasTranslation(options))
+        return false;
     const here = options.find((option) => option.current) ?? options[0];
     return html `<li class="pc-lang" data-menu-item="language"><button type="button" class="pc-lang-trigger" data-menu-trigger="language" aria-expanded="false" aria-controls="menu-language"><svg class="pc-globe" viewBox="0 0 18 18" width="18" height="18" aria-hidden="true"><circle cx="9" cy="9" r="7.25"></circle><ellipse cx="9" cy="9" rx="3.15" ry="7.25"></ellipse><line x1="1.75" y1="9" x2="16.25" y2="9"></line></svg><span class="pc-visually-hidden">${t('language.label', locale)}: </span><span class="pc-lang-current" lang="${here.tag}">${here.label}</span><svg class="pc-chevron" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><polyline points="2.4,4.4 6,8 9.6,4.4"></polyline></svg></button><div class="pc-lang-panel" id="menu-language" data-menu-panel="language" hidden><ul class="pc-lang-options">${options.map((option) => html `<li>${option.href
         ? html `<a class="pc-lang-option" href="${link(option.href)}" lang="${option.tag}" hreflang="${option.tag}"${attr('aria-current', option.current && 'true')}>${option.label}</a>`

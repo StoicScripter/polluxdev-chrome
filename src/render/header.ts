@@ -20,7 +20,7 @@ import { defaultLocale, type Locale } from '../i18n/config.js';
 import { localePaths, normalizePath } from '../i18n/routes.js';
 import { t } from '../i18n/ui.js';
 import { attr, html, type SafeHtml } from '../html.js';
-import { languageChoices, linkResolver, megaMenu, toggleChip, type Alternates } from './parts.js';
+import { hasTranslation, languageChoices, linkResolver, megaMenu, toggleChip, type Alternates } from './parts.js';
 
 export interface HeaderOptions {
 	/** The language this page is being read in. */
@@ -48,9 +48,11 @@ export interface HeaderOptions {
  * The chevron is the one place in the system a chevron appears; it is a select,
  * not a disclosure. A language with no translation of this page is drawn as
  * muted text with a reason — the picker never links to a page that isn't built.
+ * A page with no translation at all gets no picker.
  */
-function languagePicker(locale: Locale, path: string, link: (href: string) => string, alternates?: Alternates): SafeHtml {
+function languagePicker(locale: Locale, path: string, link: (href: string) => string, alternates?: Alternates): SafeHtml | false {
 	const options = languageChoices(path, locale, alternates);
+	if (!hasTranslation(options)) return false;
 	const here = options.find((option) => option.current) ?? options[0];
 
 	return html`<li class="pc-lang" data-menu-item="language"><button type="button" class="pc-lang-trigger" data-menu-trigger="language" aria-expanded="false" aria-controls="menu-language"><svg class="pc-globe" viewBox="0 0 18 18" width="18" height="18" aria-hidden="true"><circle cx="9" cy="9" r="7.25"></circle><ellipse cx="9" cy="9" rx="3.15" ry="7.25"></ellipse><line x1="1.75" y1="9" x2="16.25" y2="9"></line></svg><span class="pc-visually-hidden">${t('language.label', locale)}: </span><span class="pc-lang-current" lang="${here.tag}">${here.label}</span><svg class="pc-chevron" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><polyline points="2.4,4.4 6,8 9.6,4.4"></polyline></svg></button><div class="pc-lang-panel" id="menu-language" data-menu-panel="language" hidden><ul class="pc-lang-options">${options.map(
