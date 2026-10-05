@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { renderFooter, renderHeader } from '../dist/index.js';
+import { renderFooter, renderHeader, site } from '../dist/index.js';
 
 test('escapes copy that carries markup characters', () => {
 	const header = renderHeader({ locale: 'en', path: '/' });
@@ -49,14 +49,14 @@ test('repeats the CTA at the foot of the nav panel, inside the nav', () => {
 });
 
 test('prefixes site-absolute links with baseUrl, and leaves external ones alone', () => {
-	const header = renderHeader({ locale: 'de', path: '/apps/dropby-store-locator/', baseUrl: 'https://polluxdev.com/' });
-	assert.match(header, /href="https:\/\/polluxdev\.com\/de\/kontakt\/"/);
-	assert.match(header, /class="pc-wordmark" href="https:\/\/polluxdev\.com\/"/);
+	const header = renderHeader({ locale: 'de', path: '/apps/dropby-store-locator/', baseUrl: `${site.origin}/` });
+	assert.match(header, /href="https:\/\/www\.polluxdev\.com\/de\/kontakt\/"/);
+	assert.match(header, /class="pc-wordmark" href="https:\/\/www\.polluxdev\.com\/"/);
 	assert.doesNotMatch(header, /href="\/[^/]/);
 
-	const footer = renderFooter({ locale: 'en', path: '/', baseUrl: 'https://polluxdev.com' });
+	const footer = renderFooter({ locale: 'en', path: '/', baseUrl: site.origin });
 	assert.match(footer, /href="https:\/\/www\.youtube\.com\/@pollux-dev"/);
-	assert.match(footer, /href="https:\/\/polluxdev\.com\/privacy\/"/);
+	assert.match(footer, /href="https:\/\/www\.polluxdev\.com\/privacy\/"/);
 });
 
 test('German chrome links services to German pages, and the picker pairs them', () => {

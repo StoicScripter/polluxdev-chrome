@@ -14,10 +14,10 @@ route is written once.
 ## Use
 
 ```js
-import { renderHeader, renderFooter } from '@polluxdev/chrome';
+import { renderHeader, renderFooter, site } from '@polluxdev/chrome';
 
-renderHeader({ locale: 'de', path: '/apps/dropby-store-locator/', baseUrl: 'https://polluxdev.com' });
-renderFooter({ locale: 'de', path: '/apps/dropby-store-locator/', baseUrl: 'https://polluxdev.com', cookieSettings: false });
+renderHeader({ locale: 'de', path: '/apps/dropby-store-locator/', baseUrl: site.origin });
+renderFooter({ locale: 'de', path: '/apps/dropby-store-locator/', baseUrl: site.origin, cookieSettings: false });
 ```
 
 - `path` is the page's own site-absolute path. It drives the active-section

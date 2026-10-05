@@ -65,8 +65,9 @@ export interface Card extends Link {
 }
 export declare const site: {
     readonly name: "pollux|dev";
-    /** The live site. Anything drawing the chrome on another origin prefixes its links with this. */
-    readonly origin: "https://polluxdev.com";
+    /** The live site. Anything drawing the chrome on another origin prefixes its links with this.
+     *  www, not the apex: the apex 301s to www, and www is the host search engines index. */
+    readonly origin: "https://www.polluxdev.com";
     /** Footer positioning line, under the wordmark. */
     readonly positioning: {
         readonly en: "The Shopify engineering team for stores that have outgrown apps and themes. Two engineers, no account managers.";
