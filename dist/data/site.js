@@ -185,20 +185,15 @@ const menuLabels = {
     apps: { en: 'Apps', de: 'Apps' },
     company: { en: 'Company', de: 'Unternehmen' },
 };
+/* No "App documentation" card: the docs page isn't built, and a menu on every
+   page linking to a 404 is a site-wide broken link. It comes back the day the
+   page ships, as the footer's links do. */
 const appsCards = [
     ...liveApps.map((app) => ({
         label: { en: app.name, de: app.name },
         href: app.href,
         description: app.description,
     })),
-    {
-        label: { en: 'App documentation', de: 'App-Dokumentation' },
-        href: '/apps/dropby-store-locator/docs/',
-        description: {
-            en: 'Setup guides, configuration reference and troubleshooting for every app we publish.',
-            de: 'Einrichtung, Konfiguration und Hilfe bei Problemen — für jede App, die wir veröffentlichen.',
-        },
-    },
     {
         label: { en: 'Request a feature', de: 'Funktion vorschlagen' },
         href: contactPath(),

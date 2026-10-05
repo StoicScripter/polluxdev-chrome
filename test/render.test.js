@@ -37,6 +37,12 @@ test('the Company column links only to pages that are built', () => {
 	assert.doesNotMatch(footer, /how-we-work|href="\/apps\/"|\/docs\//);
 });
 
+test('the Apps menu links only to pages that are built', () => {
+	for (const locale of ['en', 'de']) {
+		assert.doesNotMatch(renderHeader({ locale, path: '/' }), /\/docs\//);
+	}
+});
+
 test('hides the header CTA on the page it points at', () => {
 	assert.doesNotMatch(renderHeader({ locale: 'en', path: '/contact/' }), /pc-cta/);
 	assert.match(renderHeader({ locale: 'en', path: '/' }), /pc-cta/);
