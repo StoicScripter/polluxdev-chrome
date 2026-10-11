@@ -115,13 +115,14 @@
 	min-height: 44px;
 }
 
+/* --brand-hover, not --brand: white on #00A9C6 is 2.8:1, on #007E93 4.8:1. */
 .pc-btn-primary {
-	background: var(--brand);
+	background: var(--brand-hover);
 	color: var(--bg);
 }
 
 .pc-btn-primary:hover {
-	background: var(--brand-hover);
+	background: var(--brand-ink);
 	color: var(--bg);
 }
 
@@ -390,7 +391,7 @@
 
 .pc-card:hover,
 .pc-card:focus-visible {
-	background: var(--brand);
+	background: var(--brand-hover);
 	color: var(--bg);
 }
 

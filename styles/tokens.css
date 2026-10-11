@@ -3,9 +3,9 @@
 
 :root {
 	/* Brand */
-	--brand:            #00A9C6; /* CTAs, active nav underline, dark-card hover fill */
-	--brand-hover:      #007E93; /* hover state of every filled button */
-	--brand-ink:        #005A69;
+	--brand:            #00A9C6; /* active nav underline, selected chips, stars, focus rings — never under white text (2.8:1) */
+	--brand-hover:      #007E93; /* every filled button and the dark-card hover fill: white on it is 4.8:1 */
+	--brand-ink:        #005A69; /* hover state of every filled button */
 	--brand-on-dark:    #3ECBE0; /* arrow links, hovers and focus rings on dark grounds only */
 
 	/* Ink */
