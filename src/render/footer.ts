@@ -1,6 +1,8 @@
 /**
  * Site footer, on the dark panel ground: bold off-white group names over
- * off-white links, one centred column on phones — see the site's CLAUDE.md §6.
+ * off-white links, centred on phones with Company and Legal as a pair — see the
+ * site's CLAUDE.md §6. The phone layout is CSS only (styles/chrome.css); the
+ * `pc-column-<key>` classes are its hooks.
  *
  * The Languages column is the header picker without the dropdown: the same
  * options, from the same registry, so the two can never offer different
@@ -53,7 +55,7 @@ export function renderFooter({
 
 	return html`<footer class="site-footer"><div class="pc-container pc-inner"><div class="pc-top"><div class="pc-brand"><p class="pc-wordmark">${site.name}</p><p class="pc-positioning">${site.positioning[locale]}</p></div><nav class="pc-columns" aria-label="${t('nav.footer', locale)}">${nav.columns.map(
 		(column) =>
-			html`<div class="pc-column"><h2 class="pc-column-heading">${column.heading}</h2><ul class="pc-column-links">${column.links.map(
+			html`<div class="pc-column pc-column-${column.key}"><h2 class="pc-column-heading">${column.heading}</h2><ul class="pc-column-links">${column.links.map(
 				(item) => html`<li><a href="${link(item.href)}">${item.label}</a></li>`,
 			)}</ul></div>`,
 	)}${

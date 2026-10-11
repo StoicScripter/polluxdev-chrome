@@ -37,6 +37,12 @@ test('the Company column links only to pages that are built', () => {
 	assert.doesNotMatch(footer, /how-we-work|href="\/apps\/"|\/docs\//);
 });
 
+test('each footer column carries the class the phone grid places it by', () => {
+	const footer = renderFooter({ locale: 'de', path: '/' });
+	assert.match(footer, /class="pc-column pc-column-services"/);
+	assert.match(footer, /class="pc-column pc-column-company"/);
+});
+
 test('the Apps menu links only to pages that are built', () => {
 	for (const locale of ['en', 'de']) {
 		assert.doesNotMatch(renderHeader({ locale, path: '/' }), /\/docs\//);

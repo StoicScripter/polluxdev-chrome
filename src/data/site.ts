@@ -389,17 +389,19 @@ export function footer(locale: Locale = defaultLocale) {
 	return {
 		columns: [
 			{
+				key: 'services',
 				heading: footerHeadings.services[locale],
 				links: resolveServices(locale).map(({ label, href }) => ({ label, href })),
 			},
 			{
+				key: 'company',
 				heading: footerHeadings.company[locale],
 				links: companyLinks.map((link) => ({
 					label: link.label[locale],
 					href: href(link.href, locale),
 				})),
 			},
-		] as Array<{ heading: string; links: Link[] }>,
+		] as Array<{ key: 'services' | 'company'; heading: string; links: Link[] }>,
 		languages: {
 			heading: footerHeadings.languages[locale],
 		},

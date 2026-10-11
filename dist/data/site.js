@@ -296,10 +296,12 @@ export function footer(locale = defaultLocale) {
     return {
         columns: [
             {
+                key: 'services',
                 heading: footerHeadings.services[locale],
                 links: resolveServices(locale).map(({ label, href }) => ({ label, href })),
             },
             {
+                key: 'company',
                 heading: footerHeadings.company[locale],
                 links: companyLinks.map((link) => ({
                     label: link.label[locale],

@@ -182,6 +182,7 @@ export declare function headerCta(locale?: Locale): Link;
  */
 export declare function footer(locale?: Locale): {
     columns: Array<{
+        key: "services" | "company";
         heading: string;
         links: Link[];
     }>;

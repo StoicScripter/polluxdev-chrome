@@ -1033,30 +1033,61 @@ a.pc-lang-option:focus-visible {
 }
 
 @media (max-width: 720px) {
-	/* One centred column. Everything below the brand block is one stack of
-	   headed link groups — Services, Company and Languages out of .pc-columns,
-	   then Legal and Social out of .pc-bottom — so the space between any two of
-	   them is a single value rather than three that happen to agree. .pc-inner
-	   carries the Languages-to-Legal gap, which is the seam between the two
-	   containers and the one that used to be twice everything else. */
+	/* Centred, and as short as a phone footer can be with every target at 44px.
+	   The desktop containers — .pc-top, the nav, .pc-bottom, .pc-legal — are
+	   dissolved so .pc-inner can lay every group out on one grid, in reading
+	   order of what a merchant looks for: the brand line, Services, Company
+	   beside Legal (two lists of short labels, which fit a half each down to
+	   320px), the languages and social marks as one unheaded closing cluster,
+	   and the copyright last.
+
+	   The spacing is named tracks, not a gap: every seam is --stack-gap except
+	   the one between the language row and the social row, which sit flush as
+	   a pair. With no Languages column its `auto` row collapses to nothing.
+
+	   `display: contents` on the nav: Chrome, Firefox and Safari 17+ keep its
+	   "Footer" landmark in the accessibility tree; Safari 16 and older drop it
+	   here, leaving the footer's own landmark and the group headings. Tab order
+	   follows the markup, so it runs Company, Languages, Legal while Legal is
+	   drawn beside Company — independent groups, so nothing is read out of
+	   sense. */
 	.site-footer {
 		--stack-gap: 32px;
 		text-align: center;
 	}
 
+	.pc-top,
+	.pc-columns,
+	.pc-bottom,
+	.pc-legal {
+		display: contents;
+	}
+
 	.pc-inner {
-		gap: var(--stack-gap);
+		display: grid;
+		grid-template:
+			'brand     brand'     auto
+			'.         .'         var(--stack-gap)
+			'services  services'  auto
+			'.         .'         var(--stack-gap)
+			'company   legal'     auto
+			'.         .'         var(--stack-gap)
+			'languages languages' auto
+			'social    social'    auto
+			'.         .'         var(--stack-gap)
+			'copyright copyright' auto
+			/ minmax(0, 1fr) minmax(0, 1fr);
+		gap: 0 24px;
 		padding-block: 56px 36px;
 	}
 
-	.pc-top,
-	.pc-columns {
-		gap: var(--stack-gap);
-	}
-
-	.pc-columns {
-		grid-template-columns: 1fr;
-	}
+	.pc-brand { grid-area: brand; }
+	.pc-column-services { grid-area: services; }
+	.pc-column-company { grid-area: company; }
+	.pc-legal-block { grid-area: legal; }
+	.pc-column-languages { grid-area: languages; }
+	.pc-social-block { grid-area: social; }
+	.pc-copyright { grid-area: copyright; }
 
 	.pc-brand,
 	.pc-column,
@@ -1084,23 +1115,21 @@ a.pc-lang-option:focus-visible {
 		gap: 0 32px;
 	}
 
+	/* The endonyms say what the row is; the heading stays for screen readers,
+	   as the social heading does at every width. */
+	.site-footer .pc-column-languages .pc-column-heading {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+		border: 0;
+	}
+
 	.site-footer .pc-hint {
 		margin-inline: auto;
-	}
-
-	/* The bottom row becomes two more headed link columns, reading straight on
-	   from the three above it, with the copyright line closing the footer. */
-	.pc-bottom {
-		flex-direction: column;
-		align-items: center;
-		gap: var(--stack-gap);
-	}
-
-	/* Dissolved: it exists to group the copyright with the legal links on one
-	   desktop line, and that line is gone here. Its children become items of
-	   .pc-bottom so the copyright can be ordered past the social list. */
-	.pc-legal {
-		display: contents;
 	}
 
 	.pc-legal-block,
@@ -1111,24 +1140,14 @@ a.pc-lang-option:focus-visible {
 		gap: 10px;
 	}
 
-	.pc-legal-block {
-		order: 1;
-	}
-
-	.pc-social-block {
-		order: 2;
-	}
-
-	/* Last: the one line down here that is a statement rather than a
-	   destination. */
+	/* The one line down here that is a statement rather than a destination. */
 	.pc-copyright {
-		order: 3;
 		font-weight: 500;
 	}
 
-	/* Back to the footer's default stacked-link treatment. A row of three
-	   legal links wraps into ragged pairs at this width. Flush rows, so each
-	   link keeps its 44px min-height without the list going loose. */
+	/* Back to the footer's default stacked-link treatment, so Legal reads as
+	   the column beside Company. Flush rows, so each link keeps its 44px
+	   min-height without the list going loose. */
 	.pc-legal-links {
 		flex-direction: column;
 		align-items: center;
@@ -1146,7 +1165,9 @@ a.pc-lang-option:focus-visible {
 		text-align: center;
 	}
 
-	.site-footer .pc-bottom-heading {
+	/* Legal is a headed column here, as Company is beside it. Social keeps its
+	   heading visually hidden: the brand marks name the row. */
+	.site-footer .pc-legal-block .pc-bottom-heading {
 		position: static;
 		width: auto;
 		height: auto;
