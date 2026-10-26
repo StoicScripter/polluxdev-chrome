@@ -42,6 +42,12 @@ export interface NavCard extends NavLink {
 }
 export interface Service extends NavCard {
     slug: string;
+    /**
+     * Only `live` services are drawn — menu, footer, homepage section — and only
+     * their pages are built. An `unreleased` one keeps its route, copy and form
+     * option so it can return by flipping this one field.
+     */
+    status: 'live' | 'unreleased';
 }
 export interface App {
     slug: string;
@@ -102,6 +108,7 @@ export declare const services: readonly [{
         readonly en: "Five working days, a written report and a fixed price for every fix. Credited if you book the work.";
         readonly de: "Fünf Werktage, ein schriftlicher Bericht und ein Festpreis für jede Lösung. Wird bei Auftrag angerechnet.";
     };
+    readonly status: "unreleased";
 }, {
     readonly slug: "checkout-discount-logic";
     readonly label: {
@@ -113,6 +120,7 @@ export declare const services: readonly [{
         readonly en: "Pricing, discount, delivery and payment rules a discount code can’t express. For Shopify Plus.";
         readonly de: "Preis-, Rabatt-, Versand- und Zahlungsregeln, die kein Rabattcode abbildet. Für Shopify Plus.";
     };
+    readonly status: "unreleased";
 }, {
     readonly slug: "integrations-automations";
     readonly label: {
@@ -124,6 +132,7 @@ export declare const services: readonly [{
         readonly en: "Orders, stock, customers and prices in sync with your ERP, 3PL or accounting tool.";
         readonly de: "Bestellungen, Bestand, Kunden und Preise im Abgleich mit ERP, Fulfillment und Buchhaltung.";
     };
+    readonly status: "unreleased";
 }, {
     readonly slug: "custom-apps";
     readonly label: {
@@ -135,6 +144,7 @@ export declare const services: readonly [{
         readonly en: "One app built around how your team works — often replacing several you pay for every month.";
         readonly de: "Eine App für die Abläufe Ihres Teams — oft anstelle mehrerer, die Sie jeden Monat bezahlen.";
     };
+    readonly status: "live";
 }, {
     readonly slug: "fix-takeover";
     readonly label: {
@@ -146,12 +156,41 @@ export declare const services: readonly [{
         readonly en: "An app or integration someone else built is broken or abandoned. We find out why, then repair or rebuild.";
         readonly de: "Eine App oder Anbindung von jemand anderem ist kaputt oder verwaist. Wir finden die Ursache und reparieren.";
     };
+    readonly status: "live";
 }];
 /** A service in one language, as the menu, footer and homepage section draw it. */
 export interface ResolvedService extends Card {
     slug: ServiceSlug;
 }
-/** The five services, resolved for the language drawn. The only path from `services` to a component. */
+export declare const liveServices: ({
+    readonly slug: "custom-apps";
+    readonly label: {
+        readonly en: "Custom Apps";
+        readonly de: "Individuelle Apps";
+    };
+    readonly href: "/services/custom-apps/";
+    readonly description: {
+        readonly en: "One app built around how your team works — often replacing several you pay for every month.";
+        readonly de: "Eine App für die Abläufe Ihres Teams — oft anstelle mehrerer, die Sie jeden Monat bezahlen.";
+    };
+    readonly status: "live";
+} | {
+    readonly slug: "fix-takeover";
+    readonly label: {
+        readonly en: "Fix & Takeover";
+        readonly de: "Reparatur & Übernahme";
+    };
+    readonly href: "/services/fix-takeover/";
+    readonly description: {
+        readonly en: "An app or integration someone else built is broken or abandoned. We find out why, then repair or rebuild.";
+        readonly de: "Eine App oder Anbindung von jemand anderem ist kaputt oder verwaist. Wir finden die Ursache und reparieren.";
+    };
+    readonly status: "live";
+})[];
+export declare const liveServiceSlugs: ServiceSlug[];
+/** Whether a service's page is built — ask before linking to it from page copy. */
+export declare function isLiveService(slug: ServiceSlug): boolean;
+/** The live services, resolved for the language drawn. The only path from `services` to a component. */
 export declare function resolveServices(locale?: Locale): ResolvedService[];
 export declare const apps: App[];
 export declare const liveApps: App[];

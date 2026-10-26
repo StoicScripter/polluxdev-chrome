@@ -3,11 +3,11 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { renderFooter, renderHeader, site } from '../dist/index.js';
+import { renderFooter, renderHeader, serviceRoutes, services, site } from '../dist/index.js';
 
 test('escapes copy that carries markup characters', () => {
 	const header = renderHeader({ locale: 'en', path: '/' });
-	assert.match(header, /Checkout &amp; Discount Logic/);
+	assert.match(header, /Fix &amp; Takeover/);
 	assert.match(header, /Tell us what&#39;s missing/);
 });
 
@@ -72,14 +72,25 @@ test('prefixes site-absolute links with baseUrl, and leaves external ones alone'
 });
 
 test('German chrome links services to German pages, and the picker pairs them', () => {
-	const header = renderHeader({ locale: 'de', path: '/de/leistungen/shop-audit/' });
-	assert.match(header, /href="\/de\/leistungen\/individuelle-apps\/"/);
+	const header = renderHeader({ locale: 'de', path: '/de/leistungen/individuelle-apps/' });
+	assert.match(header, /href="\/de\/leistungen\/reparatur-uebernahme\/"/);
 	assert.doesNotMatch(header, /class="pc-card" href="\/services\//);
 	assert.match(header, /data-menu-trigger="services"[^>]*aria-current="true"/);
-	assert.match(header, /class="pc-lang-option" href="\/services\/store-tech-audit\/"/);
+	assert.match(header, /class="pc-lang-option" href="\/services\/custom-apps\/"/);
 
-	const footer = renderFooter({ locale: 'de', path: '/de/leistungen/shop-audit/' });
+	const footer = renderFooter({ locale: 'de', path: '/de/leistungen/individuelle-apps/' });
 	assert.match(footer, /href="\/de\/leistungen\/reparatur-uebernahme\/"/);
+});
+
+test('draws no unreleased service in the menu or the footer', () => {
+	const hidden = services.filter((service) => service.status !== 'live');
+	for (const locale of ['en', 'de']) {
+		const chrome = renderHeader({ locale, path: '/' }) + renderFooter({ locale, path: '/' });
+		for (const service of hidden) {
+			assert.doesNotMatch(chrome, new RegExp(`href="${service.href}"`), service.slug);
+			assert.doesNotMatch(chrome, new RegExp(`href="${serviceRoutes[service.slug].de}"`), service.slug);
+		}
+	}
 });
 
 test('cookie settings control is opt-out', () => {

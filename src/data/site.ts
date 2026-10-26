@@ -57,6 +57,12 @@ export interface NavCard extends NavLink {
 
 export interface Service extends NavCard {
 	slug: string;
+	/**
+	 * Only `live` services are drawn — menu, footer, homepage section — and only
+	 * their pages are built. An `unreleased` one keeps its route, copy and form
+	 * option so it can return by flipping this one field.
+	 */
+	status: 'live' | 'unreleased';
 }
 
 export interface App {
@@ -135,6 +141,7 @@ export const services = [
 			en: 'Five working days, a written report and a fixed price for every fix. Credited if you book the work.',
 			de: 'Fünf Werktage, ein schriftlicher Bericht und ein Festpreis für jede Lösung. Wird bei Auftrag angerechnet.',
 		},
+		status: 'unreleased',
 	},
 	{
 		slug: 'checkout-discount-logic',
@@ -147,6 +154,7 @@ export const services = [
 			en: 'Pricing, discount, delivery and payment rules a discount code can’t express. For Shopify Plus.',
 			de: 'Preis-, Rabatt-, Versand- und Zahlungsregeln, die kein Rabattcode abbildet. Für Shopify Plus.',
 		},
+		status: 'unreleased',
 	},
 	{
 		slug: 'integrations-automations',
@@ -159,6 +167,7 @@ export const services = [
 			en: 'Orders, stock, customers and prices in sync with your ERP, 3PL or accounting tool.',
 			de: 'Bestellungen, Bestand, Kunden und Preise im Abgleich mit ERP, Fulfillment und Buchhaltung.',
 		},
+		status: 'unreleased',
 	},
 	{
 		slug: 'custom-apps',
@@ -171,6 +180,7 @@ export const services = [
 			en: 'One app built around how your team works — often replacing several you pay for every month.',
 			de: 'Eine App für die Abläufe Ihres Teams — oft anstelle mehrerer, die Sie jeden Monat bezahlen.',
 		},
+		status: 'live',
 	},
 	{
 		slug: 'fix-takeover',
@@ -183,6 +193,7 @@ export const services = [
 			en: 'An app or integration someone else built is broken or abandoned. We find out why, then repair or rebuild.',
 			de: 'Eine App oder Anbindung von jemand anderem ist kaputt oder verwaist. Wir finden die Ursache und reparieren.',
 		},
+		status: 'live',
 	},
 ] as const satisfies readonly (Service & { slug: ServiceSlug })[];
 
@@ -197,9 +208,18 @@ export interface ResolvedService extends Card {
 	slug: ServiceSlug;
 }
 
-/** The five services, resolved for the language drawn. The only path from `services` to a component. */
+export const liveServices = services.filter((service) => service.status === 'live');
+
+export const liveServiceSlugs: ServiceSlug[] = liveServices.map((service) => service.slug);
+
+/** Whether a service's page is built — ask before linking to it from page copy. */
+export function isLiveService(slug: ServiceSlug): boolean {
+	return liveServiceSlugs.includes(slug);
+}
+
+/** The live services, resolved for the language drawn. The only path from `services` to a component. */
 export function resolveServices(locale: Locale = defaultLocale): ResolvedService[] {
-	return services.map((service) => ({ slug: service.slug, ...card(service, locale) }));
+	return liveServices.map((service) => ({ slug: service.slug, ...card(service, locale) }));
 }
 
 /* ----------------------------------------------------------------- apps */
