@@ -82,6 +82,19 @@ test('German chrome links services to German pages, and the picker pairs them', 
 	assert.match(footer, /href="\/de\/leistungen\/reparatur-uebernahme\/"/);
 });
 
+test('the Apps menu lists ThermoGuard, and German chrome pairs its two pages', () => {
+	assert.match(renderHeader({ locale: 'en', path: '/' }), /class="pc-card" href="\/apps\/thermoguard\/"/);
+
+	const header = renderHeader({ locale: 'de', path: '/de/apps/thermoguard/' });
+	assert.match(header, /class="pc-card" href="\/de\/apps\/thermoguard\/"/);
+	assert.match(header, /data-menu-trigger="apps"[^>]*aria-current="true"/);
+	assert.match(header, /class="pc-lang-option" href="\/apps\/thermoguard\/"/);
+	assert.match(renderFooter({ locale: 'de', path: '/de/apps/thermoguard/' }), /pc-column-languages/);
+
+	// Dropby has no German page, so the German card keeps its English path.
+	assert.match(header, /class="pc-card" href="\/apps\/dropby-store-locator\/"/);
+});
+
 test('draws no unreleased service in the menu or the footer', () => {
 	const hidden = services.filter((service) => service.status !== 'live');
 	for (const locale of ['en', 'de']) {

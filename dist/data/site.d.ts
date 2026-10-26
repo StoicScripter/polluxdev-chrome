@@ -12,10 +12,10 @@
  * the header and footer renderers free of translation logic.
  *
  * Destinations are locale-invariant unless a real translated route exists. Today
- * that means /contact, the blog index, the five service pages and the three
- * legal documents, which come from their own registries (./routes.ts); the app
- * routes are English-only until those pages are built in German, so a German
- * label pointing at an English path is deliberate, not an oversight. The posts themselves stay
+ * that means /contact, the blog index, the five service pages, the three legal
+ * documents and the ThermoGuard page, which come from their own registries
+ * (./routes.ts); Dropby's page is English-only until it is built in German, so a
+ * German label pointing at its English path is deliberate, not an oversight. The posts themselves stay
  * English even from the German index — there is only one of each.
  *
  * Moved here from the site's src/data/site.ts so the Dropby demo can draw the

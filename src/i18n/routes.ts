@@ -17,6 +17,8 @@
  */
 
 import {
+	appRouteSlugs,
+	appRoutes,
 	blogRoutes,
 	contactRoutes,
 	legalDocs,
@@ -32,7 +34,7 @@ export type LocalePaths = Record<Locale, string | null>;
 
 /**
  * Every page the site serves, keyed by nothing: the row is found by matching any
- * of its own paths. Pages absent from this table (the app pages, the
+ * of its own paths. Pages absent from this table (the Dropby page, the
  * individual posts) are English-only for now and fall through to the default
  * below.
  */
@@ -49,6 +51,9 @@ const pages: LocalePaths[] = [
 	{ en: contactRoutes.en.path, de: contactRoutes.de.path },
 
 	...serviceSlugs.map((slug) => ({ en: serviceRoutes[slug].en, de: serviceRoutes[slug].de })),
+
+	// The translated app pages. Dropby's is English only and falls through.
+	...appRouteSlugs.map((slug) => ({ en: appRoutes[slug].en, de: appRoutes[slug].de })),
 
 	// The index only. A post is written once, in English, and lives at
 	// /blog/<slug> whichever index the reader arrived from.

@@ -82,6 +82,26 @@ export function servicePath(slug: ServiceSlug, locale: Locale = defaultLocale): 
 	return serviceRoutes[slug][locale];
 }
 
+/* ------------------------------------------------------------------ apps */
+
+/**
+ * The app pages that exist in more than one language. An app is a product
+ * name, so its slug is the same word in both: only the locale prefix differs.
+ * Dropby is absent on purpose — its page is English only, and its path lives
+ * on the app record in ./site.ts until a German sibling is built.
+ */
+export const appRoutes = {
+	thermoguard: { en: '/apps/thermoguard/', de: '/de/apps/thermoguard/' },
+} as const satisfies Record<string, Record<Locale, string>>;
+
+export type AppRouteSlug = keyof typeof appRoutes;
+
+export const appRouteSlugs = Object.keys(appRoutes) as AppRouteSlug[];
+
+export function appPath(slug: AppRouteSlug, locale: Locale = defaultLocale): string {
+	return appRoutes[slug][locale];
+}
+
 /* ------------------------------------------------------------------ blog */
 
 export interface BlogRoute {

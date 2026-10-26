@@ -12,10 +12,10 @@
  * the header and footer renderers free of translation logic.
  *
  * Destinations are locale-invariant unless a real translated route exists. Today
- * that means /contact, the blog index, the five service pages and the three
- * legal documents, which come from their own registries (./routes.ts); the app
- * routes are English-only until those pages are built in German, so a German
- * label pointing at an English path is deliberate, not an oversight. The posts themselves stay
+ * that means /contact, the blog index, the five service pages, the three legal
+ * documents and the ThermoGuard page, which come from their own registries
+ * (./routes.ts); Dropby's page is English-only until it is built in German, so a
+ * German label pointing at its English path is deliberate, not an oversight. The posts themselves stay
  * English even from the German index — there is only one of each.
  *
  * Moved here from the site's src/data/site.ts so the Dropby demo can draw the
@@ -24,7 +24,7 @@
  * now lives beside those options, in the site's src/data/contact.ts.
  */
 import { defaultLocale } from '../i18n/config.js';
-import { blogPath, blogRoutes, contactPath, contactRoutes, legalNav, serviceRoutes, serviceSlugs, servicePath, } from './routes.js';
+import { appPath, appRouteSlugs, appRoutes, blogPath, blogRoutes, contactPath, contactRoutes, legalNav, serviceRoutes, serviceSlugs, servicePath, } from './routes.js';
 export const site = {
     name: 'pollux|dev',
     /** The live site. Anything drawing the chrome on another origin prefixes its links with this.
@@ -158,15 +158,15 @@ export const apps = [
         listingUrl: 'https://apps.shopify.com/pollux-store-locator',
     },
     {
-        // Not public yet: never listed in nav, never described as installable.
         slug: 'thermoguard',
         name: 'ThermoGuard',
-        href: '/apps/thermoguard/',
+        href: appRoutes.thermoguard.en,
         description: {
-            en: 'Protection for temperature-sensitive shipments.',
-            de: 'Schutz für temperaturempfindliche Sendungen.',
+            en: 'Weather protection for perishables: hold at-risk orders and offer only fast shipping in heat or frost.',
+            de: 'Wetterschutz für empfindliche Ware: gefährdete Bestellungen anhalten, bei Hitze oder Frost nur schnell versenden.',
         },
-        status: 'unreleased',
+        status: 'live',
+        listingUrl: 'https://apps.shopify.com/thermoguard',
     },
 ];
 export const liveApps = apps.filter((app) => app.status === 'live');
@@ -180,6 +180,7 @@ const translatedRoutes = {
     [contactRoutes.en.path]: contactPath,
     [blogRoutes.en.path]: blogPath,
     ...Object.fromEntries(serviceSlugs.map((slug) => [serviceRoutes[slug].en, (locale) => servicePath(slug, locale)])),
+    ...Object.fromEntries(appRouteSlugs.map((slug) => [appRoutes[slug].en, (locale) => appPath(slug, locale)])),
 };
 const href = (path, locale) => translatedRoutes[path]?.(locale) ?? path;
 /** Resolves a card's localized strings and destination for the language drawn. */

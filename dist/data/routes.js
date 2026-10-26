@@ -58,6 +58,20 @@ export const serviceSlugs = Object.keys(serviceRoutes);
 export function servicePath(slug, locale = defaultLocale) {
     return serviceRoutes[slug][locale];
 }
+/* ------------------------------------------------------------------ apps */
+/**
+ * The app pages that exist in more than one language. An app is a product
+ * name, so its slug is the same word in both: only the locale prefix differs.
+ * Dropby is absent on purpose — its page is English only, and its path lives
+ * on the app record in ./site.ts until a German sibling is built.
+ */
+export const appRoutes = {
+    thermoguard: { en: '/apps/thermoguard/', de: '/de/apps/thermoguard/' },
+};
+export const appRouteSlugs = Object.keys(appRoutes);
+export function appPath(slug, locale = defaultLocale) {
+    return appRoutes[slug][locale];
+}
 /**
  * The index exists twice — /blog/ and /de/blog/ — but a post exists once, in
  * English, at /blog/<slug>/ (the site's `postPath`).

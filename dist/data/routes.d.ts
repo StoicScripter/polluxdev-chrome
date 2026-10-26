@@ -59,6 +59,21 @@ export declare const serviceRoutes: {
 export type ServiceSlug = keyof typeof serviceRoutes;
 export declare const serviceSlugs: ServiceSlug[];
 export declare function servicePath(slug: ServiceSlug, locale?: Locale): string;
+/**
+ * The app pages that exist in more than one language. An app is a product
+ * name, so its slug is the same word in both: only the locale prefix differs.
+ * Dropby is absent on purpose — its page is English only, and its path lives
+ * on the app record in ./site.ts until a German sibling is built.
+ */
+export declare const appRoutes: {
+    readonly thermoguard: {
+        readonly en: "/apps/thermoguard/";
+        readonly de: "/de/apps/thermoguard/";
+    };
+};
+export type AppRouteSlug = keyof typeof appRoutes;
+export declare const appRouteSlugs: AppRouteSlug[];
+export declare function appPath(slug: AppRouteSlug, locale?: Locale): string;
 export interface BlogRoute {
     /** Trailing slashes throughout: the build writes directories, not .html files. */
     path: string;
